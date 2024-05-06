@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:water_tracker/Models/onboard_contents.dart';
 import 'package:water_tracker/Widgets/onboard_screen_bottom.dart';
 import 'package:water_tracker/Widgets/onboard_screen_landscape.dart';
 import 'package:water_tracker/Widgets/onboard_screen_portrait_layout.dart';
-
-import '../Widgets/onboard_page_counter.dart';
 
 class OnboardScreen extends StatefulWidget {
   const OnboardScreen({super.key});
@@ -50,7 +47,6 @@ class _OnboardScreenState extends State<OnboardScreen> {
 
   Widget portraitMode(
       double screenHeight, screenWidth, Orientation orientation) {
-    print(currentIndex);
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: [
