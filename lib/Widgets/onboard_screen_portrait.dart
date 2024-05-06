@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../Models/onboard_contents.dart';
@@ -48,12 +49,12 @@ class OnboardScreenPortrait extends StatelessWidget {
           const SizedBox(
             height: 10,
           ),
-          Wrap(
-            alignment: WrapAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(10.00),
-                child: Text(
+          Padding(
+            padding: const EdgeInsets.all(10.00),
+            child: Wrap(
+              alignment: WrapAlignment.center,
+              children: [
+                Text(
                   contents[index].description,
                   textAlign: TextAlign.justify,
                   style: const TextStyle(
@@ -61,8 +62,8 @@ class OnboardScreenPortrait extends StatelessWidget {
                     fontWeight: FontWeight.normal,
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
