@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:water_tracker/Models/onboard_contents.dart';
-import 'package:water_tracker/Widgets/onboard_screen_bottom.dart';
-import 'package:water_tracker/Widgets/onboard_screen_landscape.dart';
-import 'package:water_tracker/Widgets/onboard_screen_portrait_layout.dart';
+import 'package:water_tracker/Widgets/onboard_screen_layout.dart';
 
 class OnboardScreen extends StatefulWidget {
   const OnboardScreen({super.key});
@@ -18,6 +16,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
 
   @override
   void initState() {
+    _pageController = PageController(initialPage: currentIndex);
     super.initState();
   }
 
@@ -35,79 +34,17 @@ class _OnboardScreenState extends State<OnboardScreen> {
     return Scaffold(
       body: OrientationBuilder(
         builder: (BuildContext context, Orientation orientation) {
-          _pageController = PageController(initialPage: currentIndex);
-          if (orientation == Orientation.portrait) {
-            return portraitMode(screenHeight, screenWidth, orientation);
-          }
-          return landscapeMode(screenHeight, screenWidth, orientation);
+          return OnboardScreenLayout(
+            _pageController,
+            screenHeight: screenHeight,
+            screenWidth: screenWidth,
+            onPageChanged: (index) => setState(() => currentIndex = index),
+            orientation: orientation,
+            currentIndex: currentIndex,
+            changePage: changePage,
+          );
         },
       ),
-    );
-  }
-
-  Widget portraitMode(
-      double screenHeight, screenWidth, Orientation orientation) {
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        Expanded(
-          flex: 1,
-          child: SizedBox(
-            height: screenHeight,
-            child: PageView.builder(
-              controller: _pageController,
-              itemCount: contents.length,
-              onPageChanged: (index) => setState(() => currentIndex = index),
-              itemBuilder: (_, index) => OnboardPortrait(
-                  screenWidth: screenWidth,
-                  screenHeight: screenHeight,
-                  index: index),
-            ),
-          ),
-        ),
-        OnboardScreenBottom(
-          currentIndex: currentIndex,
-          screenWidth: screenWidth,
-          screenHeight: screenHeight,
-          changePage: changePage,
-          orientation: orientation,
-        )
-      ],
-    );
-  }
-
-  Widget landscapeMode(
-      double screenHeight, double screenWidth, Orientation orientation) {
-    return Column(
-      children: [
-        Expanded(
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              SizedBox(
-                width: screenWidth,
-                height: screenHeight,
-                child: PageView.builder(
-                  controller: _pageController,
-                  itemCount: contents.length,
-                  onPageChanged: (index) =>
-                      setState(() => currentIndex = index),
-                  itemBuilder: (_, index) => OnboardLandscape(
-                      screenWidth: screenWidth,
-                      screenHeight: screenHeight,
-                      index: index),
-                ),
-              ),
-            ],
-          ),
-        ),
-        OnboardScreenBottom(
-            currentIndex: currentIndex,
-            screenWidth: screenWidth,
-            screenHeight: screenHeight,
-            changePage: changePage,
-            orientation: orientation),
-      ],
     );
   }
 

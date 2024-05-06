@@ -3,11 +3,11 @@ import 'package:flutter_svg/svg.dart';
 
 import '../Models/onboard_contents.dart';
 
-class OnboardLandscape extends StatelessWidget {
+class OnboardScreenLandscape extends StatelessWidget {
   final int index;
   final double screenHeight, screenWidth;
 
-  const OnboardLandscape({
+  const OnboardScreenLandscape({
     super.key,
     required this.screenWidth,
     required this.screenHeight,

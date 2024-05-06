@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../Models/onboard_contents.dart';
 
-class OnboardPortrait extends StatelessWidget {
+class OnboardScreenPortrait extends StatelessWidget {
   final int index;
   final double screenHeight, screenWidth;
 
-  const OnboardPortrait({
+  const OnboardScreenPortrait({
     super.key,
     required this.screenWidth,
     required this.screenHeight,
