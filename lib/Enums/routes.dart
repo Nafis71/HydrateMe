@@ -1,3 +1,3 @@
 enum Routes{
-  onBoardScreen, homeScreen
+  onBoardScreen, homeScreen, dataCollectionScreen
 }

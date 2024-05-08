@@ -51,7 +51,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
 
   void changePage() {
     if (currentIndex == contents.length - 1) {
-      Navigator.pushReplacementNamed(context, Routes.homeScreen.toString());
+      Navigator.pushReplacementNamed(context, Routes.dataCollectionScreen.toString());
     }
     _pageController.nextPage(
         duration: const Duration(milliseconds: 600), curve: Curves.easeIn);

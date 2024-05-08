@@ -23,7 +23,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("HydrateMe"),
         actions: const [
@@ -31,47 +30,59 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           AppBarIconButton(desiredIcon: Icons.history),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(10.00),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const HomeScreenGreetingsLayout(),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    SizedBox(
-                      height: screenHeight * 0.45,
-                      child: HomeScreenWaterIndicator(
-                        screenHeight: screenHeight,
-                        screenWidth: screenWidth,
+      body: SafeArea(
+        child: OrientationBuilder(
+          builder: (BuildContext context, Orientation orientation) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.00),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 6,
+                    child: SizedBox(
+                      height: screenHeight * 0.92,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const SizedBox(
+                              height: 2,
+                            ),
+                            const HomeScreenGreetingsLayout(),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            SizedBox(
+                              height: screenHeight * 0.43,
+                              child: HomeScreenWaterIndicator(
+                                screenHeight: screenHeight,
+                                screenWidth: screenWidth,
+                              ),
+                            ),
+                            HomeScreenRecentlyDrankInfo(
+                              screenHeight: screenHeight,
+                              screenWidth: screenWidth,
+                              orientation: orientation,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    HomeScreenRecentlyDrankInfo(
-                      screenHeight: screenHeight,
-                      screenWidth: screenWidth,
-                    ),
-                  ],
-                ),
+                  ),
+                  HomeScreenBottomLayout(
+                    screenHeight: screenHeight,
+                    screenWidth: screenWidth,
+                    orientation: orientation,
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  )
+                ],
               ),
-            ),
-            HomeScreenBottomLayout(
-              screenHeight: screenHeight,
-              screenWidth: screenWidth,
-            ),
-            const SizedBox(
-              height: 10,
-            )
-          ],
+            );
+          },
         ),
       ),
     );

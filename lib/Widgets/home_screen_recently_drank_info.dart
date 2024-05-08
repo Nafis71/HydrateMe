@@ -2,18 +2,22 @@ import 'package:flutter/material.dart';
 
 class HomeScreenRecentlyDrankInfo extends StatelessWidget {
   final double screenWidth, screenHeight;
+  final Orientation orientation;
 
   const HomeScreenRecentlyDrankInfo({
     super.key,
     required this.screenHeight,
     required this.screenWidth,
+    required this.orientation,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: screenWidth * 0.9,
-      height: screenHeight * 0.15,
+      height: (orientation == Orientation.portrait)
+          ? screenHeight * 0.15
+          : screenHeight * 0.35,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
