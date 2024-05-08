@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:water_tracker/Enums/routes.dart';
 import 'package:water_tracker/Models/onboard_contents.dart';
 import 'package:water_tracker/Widgets/onboard_screen_layout.dart';
 
@@ -49,7 +50,9 @@ class _OnboardScreenState extends State<OnboardScreen> {
   }
 
   void changePage() {
-    if (currentIndex == contents.length - 1) {}
+    if (currentIndex == contents.length - 1) {
+      Navigator.pushReplacementNamed(context, Routes.homeScreen.toString());
+    }
     _pageController.nextPage(
         duration: const Duration(milliseconds: 600), curve: Curves.easeIn);
   }
