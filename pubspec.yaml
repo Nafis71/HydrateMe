@@ -39,6 +39,7 @@ dependencies:
   lottie: ^3.1.0
   animated_text_kit: ^4.2.2
   widget_and_text_animator: ^1.1.5
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_test:

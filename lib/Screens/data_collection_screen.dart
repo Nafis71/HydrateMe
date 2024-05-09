@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:water_tracker/Widgets/app_radio_list_tile.dart';
-import 'package:water_tracker/Widgets/text_form_field.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:water_tracker/Enums/routes.dart';
 import 'package:widget_and_text_animator/widget_and_text_animator.dart';
+
+import '../Widgets/data_collection_screen_form_layout.dart';
 
 class DataCollectionScreen extends StatefulWidget {
   const DataCollectionScreen({super.key});
@@ -12,6 +14,7 @@ class DataCollectionScreen extends StatefulWidget {
 }
 
 class _DataCollectionScreenState extends State<DataCollectionScreen> {
+  late SharedPreferences preferences;
   late final GlobalKey<FormState> formKey;
   List<String> genderRadioOptions = ["Male", "Female"];
   late TextEditingController _nameController;
@@ -21,10 +24,15 @@ class _DataCollectionScreenState extends State<DataCollectionScreen> {
 
   @override
   void initState() {
+    initializeSharedPreference();
     _nameController = TextEditingController();
     _ageController = TextEditingController();
     formKey = GlobalKey<FormState>();
     super.initState();
+  }
+
+  Future<void> initializeSharedPreference() async {
+    preferences = await SharedPreferences.getInstance();
   }
 
   @override
@@ -61,7 +69,7 @@ class _DataCollectionScreenState extends State<DataCollectionScreen> {
                             width: screenWidth * 0.8,
                             child: SvgPicture.asset(
                               "assets/images/info.svg",
-                              fit: BoxFit.contain,
+                              fit: BoxFit.scaleDown,
                             ),
                           ),
                         ),
@@ -91,84 +99,40 @@ class _DataCollectionScreenState extends State<DataCollectionScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    Form(
-                      key: formKey,
-                      child: Column(
-                        children: [
-                          FormTextField(
-                            controller: _nameController,
-                            hintText: "Enter your name",
-                            errorText: "Invalid Name",
-                            regExpression: r'^[a-z A-Z]+$',
-                            textInputType: TextInputType.text,
+                    DataCollectionScreenFormLayout(
+                      orientation: orientation,
+                      nameController: _nameController,
+                      ageController: _ageController,
+                      formKey: formKey,
+                      gender: gender,
+                      genderRadioOptions: genderRadioOptions,
+                      screenWidth: screenWidth,
+                      screenHeight: screenHeight,
+                      onChanged: (value) {
+                        gender = value.toString();
+                        setState(() {});
+                      },
+                    ),
+                    SizedBox(
+                      width: screenWidth * 0.9,
+                      height: (orientation == Orientation.portrait)
+                          ? screenHeight * 0.07
+                          : screenHeight * 0.15,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          checkUserData();
+                        },
+                        child: const Text(
+                          "Continue",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
                           ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          FormTextField(
-                            controller: _ageController,
-                            hintText: "Enter your age",
-                            errorText: "Invalid Age",
-                            regExpression: r'^[0-9]+$',
-                            textInputType: TextInputType.number,
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          AppRadioListTile(
-                            gender: gender,
-                            genderRadioOption: genderRadioOptions[0],
-                            onChanged: (value) {
-                              gender = value.toString();
-                              setState(() {});
-                            },
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          AppRadioListTile(
-                            gender: gender,
-                            genderRadioOption: genderRadioOptions[1],
-                            onChanged: (value) {
-                              gender = value.toString();
-                              setState(() {});
-                            },
-                          ),
-                          (orientation == Orientation.landscape)
-                              ? const SizedBox(
-                                  height: 40,
-                                )
-                              : const SizedBox(
-                                  height: 70,
-                                ),
-                          SizedBox(
-                            width: screenWidth * 0.9,
-                            height: (orientation == Orientation.portrait)
-                                ? screenHeight * 0.07
-                                : screenHeight * 0.15,
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              // TODO I have to move this portion to the themeData
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFF2AA2D6),
-                                  foregroundColor: Colors.white,
-                                  elevation: 8,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15))),
-                              child: const Text(
-                                "Continue",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                        ],
+                        ),
                       ),
+                    ),
+                    const SizedBox(
+                      height: 10,
                     ),
                   ],
                 ),
@@ -177,6 +141,43 @@ class _DataCollectionScreenState extends State<DataCollectionScreen> {
           },
         ),
       ),
+    );
+  }
+
+  void checkUserData() {
+    if (formKey.currentState!.validate()) {
+      const AlertDialog(title: Text("Wait Loading"));
+      saveData();
+      return;
+    }
+  }
+
+  void saveData() {
+    preferences.setString("userName", _nameController.text);
+    preferences.setString("userAge", _ageController.text);
+    preferences.setString("userGender", gender);
+    preferences.setBool("hasRegistered", true);
+    gotoHomeScreen();
+  }
+
+  void gotoHomeScreen() {
+    loadingScreen();
+    Future.delayed(const Duration(seconds: 2), () {
+      Navigator.of(context).pop();
+      Navigator.pushReplacementNamed(context, Routes.homeScreen.toString());
+    });
+  }
+
+  Future loadingScreen() async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(
+            color: Color(0xFF2AA2D6),
+          ),
+        );
+      },
     );
   }
 }

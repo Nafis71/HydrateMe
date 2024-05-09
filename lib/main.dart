@@ -3,6 +3,7 @@ import 'package:water_tracker/Enums/routes.dart';
 import 'package:water_tracker/Screens/data_collection_screen.dart';
 import 'package:water_tracker/Screens/home_screen.dart';
 import 'package:water_tracker/Screens/onboard_screen.dart';
+import 'package:water_tracker/Themes/elevated_button_style.dart';
 import 'package:water_tracker/Themes/appbar_themes.dart';
 import 'package:water_tracker/Themes/form_text_field_themes.dart';
 
@@ -25,6 +26,7 @@ class WaterTracker extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
         primaryColor: const Color(0xFF2AA2D6),
         inputDecorationTheme: FormTextFieldThemes.getFormTextFieldDecoration(),
+        elevatedButtonTheme: ElevatedButtonStyle.getElevatedButtonStyle(),
       ),
     );
   }
