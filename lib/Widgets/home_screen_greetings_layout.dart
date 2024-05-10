@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:water_tracker/Models/person_data.dart';
 
 class HomeScreenGreetingsLayout extends StatelessWidget {
-  const HomeScreenGreetingsLayout({super.key});
+  final PersonData personData = PersonData();
+  HomeScreenGreetingsLayout({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return  Column(
       children: [
         Row(
           mainAxisSize: MainAxisSize.max,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.00),
+              padding: const EdgeInsets.symmetric(horizontal: 10.00),
               child: Text(
-                "Hi, Alex",
-                style: TextStyle(
+                "Hi, ${personData.getName}",
+                style: const TextStyle(
                     fontSize: 16, fontWeight: FontWeight.w400),
               ),
             ),
           ],
         ),
-        Row(
+        const Row(
           children: [
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.00),

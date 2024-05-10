@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:water_tracker/Enums/routes.dart';
 import 'package:water_tracker/Screens/data_collection_screen.dart';
 import 'package:water_tracker/Screens/home_screen.dart';
@@ -34,7 +35,10 @@ class WaterTracker extends StatelessWidget {
   MaterialPageRoute? generateRoute(RouteSettings routeSettings) {
     final Map<String, WidgetBuilder> routes = {
       Routes.onBoardScreen.toString(): (context) => const OnboardScreen(),
-      Routes.homeScreen.toString(): (context) => const HomeScreen(),
+      Routes.homeScreen.toString(): (context) {
+        SharedPreferences preference = routeSettings.arguments as SharedPreferences;
+        return HomeScreen(sharedPreferences: preference,);
+      },
       Routes.dataCollectionScreen.toString() : (context) => const DataCollectionScreen()
     };
     final WidgetBuilder? builder = routes[routeSettings.name];

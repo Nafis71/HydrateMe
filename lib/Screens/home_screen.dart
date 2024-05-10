@@ -1,21 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:water_tracker/Models/person_data.dart';
 import 'package:water_tracker/Widgets/appbar_icon_button.dart';
 import 'package:water_tracker/Widgets/home_screen_bottom_layout.dart';
 import 'package:water_tracker/Widgets/home_screen_greetings_layout.dart';
 import 'package:water_tracker/Widgets/home_screen_recently_drank_info.dart';
 import 'package:water_tracker/Widgets/home_screen_water_indicator.dart';
 
+late final SharedPreferences preferences;
+
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key, required SharedPreferences sharedPreferences}) {
+    preferences = sharedPreferences;
+  }
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+  late final PersonData personData;
+
   @override
   void initState() {
+    personData = PersonData();
+    initializeSharedPreference();
     super.initState();
+  }
+
+  void initializeSharedPreference() {
+    personData.personName = preferences.getString("userName")!;
+    personData.personGender = preferences.getString("userGender")!;
+    personData.personAge = int.tryParse(preferences.getString("userAge")!) ?? 0;
   }
 
   @override
@@ -50,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             const SizedBox(
                               height: 2,
                             ),
-                            const HomeScreenGreetingsLayout(),
+                            HomeScreenGreetingsLayout(),
                             const SizedBox(
                               height: 10,
                             ),

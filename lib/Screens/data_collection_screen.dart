@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:water_tracker/Enums/routes.dart';
 import 'package:widget_and_text_animator/widget_and_text_animator.dart';
@@ -162,20 +163,19 @@ class _DataCollectionScreenState extends State<DataCollectionScreen> {
 
   void gotoHomeScreen() {
     loadingScreen();
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 3), () {
       Navigator.of(context).pop();
-      Navigator.pushReplacementNamed(context, Routes.homeScreen.toString());
+      Navigator.pushReplacementNamed(context, Routes.homeScreen.toString(),arguments: preferences);
     });
   }
 
   Future loadingScreen() async {
     showDialog(
       context: context,
+      barrierColor: Colors.white30,
       builder: (context) {
-        return const Center(
-          child: CircularProgressIndicator(
-            color: Color(0xFF2AA2D6),
-          ),
+        return Center(
+          child: Lottie.asset("assets/lottieFiles/loading.json"),
         );
       },
     );

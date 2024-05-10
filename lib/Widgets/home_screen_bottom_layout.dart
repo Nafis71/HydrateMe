@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:water_tracker/Models/person_data.dart';
 
 class HomeScreenBottomLayout extends StatelessWidget {
   final double screenWidth, screenHeight;
   final Orientation orientation;
+  final PersonData personData = PersonData();
 
-  const HomeScreenBottomLayout({
+  HomeScreenBottomLayout({
     super.key,
     required this.screenHeight,
     required this.screenWidth,
@@ -110,10 +112,10 @@ class HomeScreenBottomLayout extends StatelessWidget {
                   )
                 ],
               ),
-              child: const Column(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Padding(
@@ -132,10 +134,10 @@ class HomeScreenBottomLayout extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
-                          "1700ml",
-                          style: TextStyle(
+                          "${personData.calculateWaterIntake().toString()}ml",
+                          style: const TextStyle(
                             color: Color(0xFF2AA2D6),
                             fontSize: 20,
                             fontWeight: FontWeight.w500,
