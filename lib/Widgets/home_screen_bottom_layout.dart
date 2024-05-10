@@ -4,13 +4,15 @@ import 'package:water_tracker/Models/person_data.dart';
 class HomeScreenBottomLayout extends StatelessWidget {
   final double screenWidth, screenHeight;
   final Orientation orientation;
-  final PersonData personData = PersonData();
+  final PersonData personData;
+  final int drankWater;
 
   HomeScreenBottomLayout({
     super.key,
     required this.screenHeight,
     required this.screenWidth,
     required this.orientation,
+    required this.drankWater, required this.personData,
   });
 
   @override
@@ -52,10 +54,10 @@ class HomeScreenBottomLayout extends StatelessWidget {
                   )
                 ],
               ),
-              child: const Column(
+              child:  Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Padding(
@@ -74,10 +76,10 @@ class HomeScreenBottomLayout extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
-                          "950ml",
-                          style: TextStyle(
+                          "${drankWater.toString()}ml",
+                          style: const TextStyle(
                             color: Color(0xFF2AA2D6),
                             fontSize: 20,
                             fontWeight: FontWeight.w500,

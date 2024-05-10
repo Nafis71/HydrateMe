@@ -1,19 +1,21 @@
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:water_tracker/Enums/routes.dart';
 import 'package:water_tracker/Screens/data_collection_screen.dart';
 import 'package:water_tracker/Screens/home_screen.dart';
 import 'package:water_tracker/Screens/onboard_screen.dart';
+import 'package:water_tracker/Screens/water_intake_menu.dart';
 import 'package:water_tracker/Themes/elevated_button_style.dart';
 import 'package:water_tracker/Themes/appbar_themes.dart';
 import 'package:water_tracker/Themes/form_text_field_themes.dart';
 
-main() {
+main(){
   runApp(const WaterTracker());
 }
 
 class WaterTracker extends StatelessWidget {
-  const WaterTracker({super.key});
+  const WaterTracker({super.key,});
 
   @override
   Widget build(BuildContext context) {
@@ -35,11 +37,8 @@ class WaterTracker extends StatelessWidget {
   MaterialPageRoute? generateRoute(RouteSettings routeSettings) {
     final Map<String, WidgetBuilder> routes = {
       Routes.onBoardScreen.toString(): (context) => const OnboardScreen(),
-      Routes.homeScreen.toString(): (context) {
-        SharedPreferences preference = routeSettings.arguments as SharedPreferences;
-        return HomeScreen(sharedPreferences: preference,);
-      },
-      Routes.dataCollectionScreen.toString() : (context) => const DataCollectionScreen()
+      Routes.homeScreen.toString(): (context) => const HomeScreen(),
+      Routes.dataCollectionScreen.toString() : (context) => const DataCollectionScreen(),
     };
     final WidgetBuilder? builder = routes[routeSettings.name];
     return (builder != null) ? MaterialPageRoute(builder: builder) : null;

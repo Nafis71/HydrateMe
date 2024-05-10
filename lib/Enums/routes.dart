@@ -1,3 +1,3 @@
 enum Routes{
-  onBoardScreen, homeScreen, dataCollectionScreen
+  onBoardScreen, homeScreen, dataCollectionScreen, waterIntakeMenu
 }

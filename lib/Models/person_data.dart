@@ -1,7 +1,7 @@
 class PersonData{
 
-  late String  _personName,_personGender;
-  late int _personAge;
+  String  _personName ="",_personGender ="";
+  int _personAge = 0;
 
   static PersonData? instance;
   PersonData._();
