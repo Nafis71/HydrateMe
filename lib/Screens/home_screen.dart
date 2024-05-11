@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:water_tracker/HiveBoxes/boxes.dart';
 import 'package:water_tracker/Models/bottom_sheet_contents.dart';
 import 'package:water_tracker/Models/person_data.dart';
+import 'package:water_tracker/Models/water_intake_model.dart';
 import 'package:water_tracker/Widgets/appbar_icon_button.dart';
-import 'package:water_tracker/Widgets/bottom_sheet_container.dart';
 import 'package:water_tracker/Widgets/home_screen_bottom_layout.dart';
+import 'package:water_tracker/Widgets/home_screen_bottom_sheet.dart';
 import 'package:water_tracker/Widgets/home_screen_greetings_layout.dart';
 import 'package:water_tracker/Widgets/home_screen_recently_drank_info.dart';
 import 'package:water_tracker/Widgets/home_screen_water_indicator.dart';
@@ -50,7 +54,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    debugPrint(_selectedDrinkQuantity.toString());
     return Scaffold(
       appBar: AppBar(
         title: const Text("HydrateMe"),
@@ -79,7 +82,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             const SizedBox(
                               height: 2,
                             ),
-                            HomeScreenGreetingsLayout(),
+                            HomeScreenGreetingsLayout(
+                              dateTime: getDateTime(),
+                            ),
                             const SizedBox(
                               height: 10,
                             ),
@@ -129,112 +134,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       backgroundColor: Colors.white,
       showDragHandle: true,
       isScrollControlled: true,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setModalState) => SizedBox(
-          height: MediaQuery.of(context).size.height * 0.6,
-          width: MediaQuery.of(context).size.width,
-          child: Padding(
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: Container(
-              margin: const EdgeInsets.all(10.00),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Wrap(
-                      children: [
-                        Text(
-                          "Choose drink type",
-                          style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Wrap(
-                      children: [
-                        Text(
-                          "Select what you actually drink",
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.27,
-                      child: GridView.builder(
-                        itemCount: containerContents.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 10,
-                          childAspectRatio: 1.7,
-                          mainAxisSpacing: 10,
-                        ),
-                        itemBuilder: (context, index) => InkWell(
-                          onTap: () {},
-                          child: InkWell(
-                            splashColor: Colors.transparent,
-                            onTap: () {
-                              chooseContainer(index);
-                              setState(() {});
-                              setModalState(() {});
-                            },
-                            child: BottomSheetContainer(
-                              backgroundColor:
-                                  containerContents[index].backgroundColor,
-                              borderColor: containerContents[index].borderColor,
-                              cardHeader: containerContents[index].header,
-                              icon: containerContents[index].icon,
-                              index: index,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      controller: _drinkSizeController,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                          labelStyle: TextStyle(
-                              color: bottomSheetEditBoxColor, fontSize: 16),
-                          labelText: "Enter size of the drink",
-                          hintFadeDuration: const Duration(seconds: 1),
-                          hintText: "Enter size of the drink",
-                          contentPadding: const EdgeInsets.all(15.00),
-                          suffix: const Text("ml"),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: const BorderRadius.only(
-                                  bottomLeft: Radius.circular(30),
-                                  topRight: Radius.circular(30)),
-                              borderSide:
-                                  BorderSide(color: bottomSheetEditBoxColor))),
-                    ),
-                    const SizedBox(
-                      height: 80,
-                    ),
-                    SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * 0.06,
-                        child: ElevatedButton(
-                            onPressed: () {}, child: Text("ADD DRINK")))
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
+      builder: (context) => HomeScreenBottomSheet(
+        drinkSizeController: _drinkSizeController,
+        onContainerTap: chooseContainer,
+        addWaterIntake: addWaterIntake,
       ),
     );
   }
@@ -254,5 +157,29 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         containerContents[i].isSelected = false;
       }
     }
+    setState(() {});
+  }
+
+  void addWaterIntake(BuildContext context) async {
+    _selectedDrinkQuantity = double.tryParse(_drinkSizeController.text) ?? 0.0;
+    if (selectedDrink != "" && _selectedDrinkQuantity > 0) {
+      DateTime dateTime = DateTime.now();
+      final data = WaterIntakeModel(
+          drinkName: selectedDrink,
+          drinkSize: _selectedDrinkQuantity.toInt().toString(),
+          dateTime: dateTime);
+      Navigator.pop(context);
+      saveToDatabase(data);
+    }
+  }
+
+  Future<void> saveToDatabase(WaterIntakeModel data) async {
+    Box hiveBox = Boxes.getData();
+    hiveBox.add(data);
+  }
+
+  String getDateTime() {
+    String dateTimeNow = DateFormat.MMMMEEEEd().format(DateTime.now());
+    return dateTimeNow;
   }
 }

@@ -54,7 +54,7 @@ class HomeScreenRecentlyDrankInfo extends StatelessWidget {
             ),
             tileColor: Colors.blue[50],
             leading: const Icon(
-              Icons.water_drop_outlined,
+              Icons.info_outline,
               size: 28,
             ),
             shape: RoundedRectangleBorder(

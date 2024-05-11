@@ -3,7 +3,8 @@ import 'package:water_tracker/Models/person_data.dart';
 
 class HomeScreenGreetingsLayout extends StatelessWidget {
   final PersonData personData = PersonData();
-  HomeScreenGreetingsLayout({super.key});
+  final String dateTime;
+  HomeScreenGreetingsLayout({super.key, required this.dateTime});
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +23,13 @@ class HomeScreenGreetingsLayout extends StatelessWidget {
             ),
           ],
         ),
-        const Row(
+         Row(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.00),
+              padding: const EdgeInsets.symmetric(horizontal: 10.00),
               child: Text(
-                "Today, 11 Oct",
-                style: TextStyle(
+                dateTime,
+                style: const TextStyle(
                     fontSize: 18, fontWeight: FontWeight.w600),
               ),
             ),

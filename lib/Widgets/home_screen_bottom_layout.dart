@@ -7,7 +7,7 @@ class HomeScreenBottomLayout extends StatelessWidget {
   final PersonData personData;
   final int drankWater;
 
-  HomeScreenBottomLayout({
+  const HomeScreenBottomLayout({
     super.key,
     required this.screenHeight,
     required this.screenWidth,

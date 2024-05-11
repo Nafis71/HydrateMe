@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:water_tracker/Enums/routes.dart';
 import 'package:water_tracker/Models/onboard_contents.dart';
+import 'package:water_tracker/Models/water_intake_model.dart';
 import 'package:water_tracker/Widgets/onboard_screen_layout.dart';
 
 class OnboardScreen extends StatefulWidget {
@@ -24,12 +26,18 @@ class _OnboardScreenState extends State<OnboardScreen> {
     super.initState();
   }
 
+  initializeHive() async{
+    Hive.registerAdapter(WaterIntakeModelAdapter());
+    await Hive.openBox<WaterIntakeModel>("WaterIntake");
+  }
+
   void initializeSharedPreference() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
     bool? isRegistered = preferences.getBool("hasRegistered");
     if (isRegistered != null) {
       skipScreen(preferences);
     }
+    initializeHive();
   }
 
   void skipScreen(SharedPreferences preferences) {

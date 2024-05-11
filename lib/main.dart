@@ -1,5 +1,9 @@
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:water_tracker/Enums/routes.dart';
 import 'package:water_tracker/Screens/data_collection_screen.dart';
@@ -10,7 +14,10 @@ import 'package:water_tracker/Themes/elevated_button_style.dart';
 import 'package:water_tracker/Themes/appbar_themes.dart';
 import 'package:water_tracker/Themes/form_text_field_themes.dart';
 
-main(){
+main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  Directory directory = await getApplicationDocumentsDirectory();
+  Hive.init(directory.path);
   runApp(const WaterTracker());
 }
 
