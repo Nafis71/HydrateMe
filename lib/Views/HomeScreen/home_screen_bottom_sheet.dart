@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
-
-import '../Models/bottom_sheet_contents.dart';
-import 'bottom_sheet_container.dart';
+import '../../Models/bottom_sheet_contents.dart';
+import '../Components/bottom_sheet_container.dart';
 
 class HomeScreenBottomSheet extends StatelessWidget {
   final TextEditingController drinkSizeController;
   final Function(int) onContainerTap;
   final Function(BuildContext) addWaterIntake;
-  const HomeScreenBottomSheet({super.key, required this.drinkSizeController, required this.onContainerTap, required this.addWaterIntake});
+
+  const HomeScreenBottomSheet(
+      {super.key,
+      required this.drinkSizeController,
+      required this.onContainerTap,
+      required this.addWaterIntake});
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +20,8 @@ class HomeScreenBottomSheet extends StatelessWidget {
         height: MediaQuery.of(context).size.height * 0.6,
         width: MediaQuery.of(context).size.width,
         child: Padding(
-          padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom),
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           child: Container(
             margin: const EdgeInsets.all(10.00),
             child: SingleChildScrollView(
@@ -55,7 +59,7 @@ class HomeScreenBottomSheet extends StatelessWidget {
                     child: GridView.builder(
                       itemCount: containerContents.length,
                       gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 10,
                         childAspectRatio: 1.7,
@@ -71,7 +75,7 @@ class HomeScreenBottomSheet extends StatelessWidget {
                           },
                           child: BottomSheetContainer(
                             backgroundColor:
-                            containerContents[index].backgroundColor,
+                                containerContents[index].backgroundColor,
                             borderColor: containerContents[index].borderColor,
                             cardHeader: containerContents[index].header,
                             icon: containerContents[index].icon,
@@ -90,8 +94,7 @@ class HomeScreenBottomSheet extends StatelessWidget {
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
                       floatingLabelAlignment: FloatingLabelAlignment.center,
-                      labelStyle: TextStyle(
-                          color: Colors.blue, fontSize: 16),
+                      labelStyle: TextStyle(color: Colors.blue, fontSize: 16),
                       labelText: "Enter size of the drink",
                       hintFadeDuration: Duration(seconds: 1),
                       hintText: "Enter size of the drink",
@@ -104,8 +107,7 @@ class HomeScreenBottomSheet extends StatelessWidget {
                           bottomLeft: Radius.circular(30),
                           topRight: Radius.circular(30),
                         ),
-                        borderSide:
-                        BorderSide(color: Colors.blue),
+                        borderSide: BorderSide(color: Colors.blue),
                       ),
                     ),
                   ),

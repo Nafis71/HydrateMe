@@ -28,7 +28,7 @@ class PersonData{
     _personName = value;
   }
 
-  int calculateWaterIntake(){
+  int calculateWaterIntakeGoal(){
     if(_personAge < 14 && _personGender.toLowerCase() == "male"){
       return 2100;
     } else if(_personAge < 14 && _personGender.toLowerCase() == "female"){

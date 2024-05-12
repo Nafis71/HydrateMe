@@ -138,7 +138,7 @@ class HomeScreenBottomLayout extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
-                          "${personData.calculateWaterIntake().toString()}ml",
+                          "${personData.calculateWaterIntakeGoal().toString()}ml",
                           style: const TextStyle(
                             color: Color(0xFF2AA2D6),
                             fontSize: 20,

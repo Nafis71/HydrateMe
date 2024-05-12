@@ -4,12 +4,13 @@ import 'package:lottie/lottie.dart';
 class HomeScreenWaterIndicator extends StatelessWidget {
   final double screenWidth, screenHeight;
   final Function onPressed;
+  final int goalCompletion;
 
   const HomeScreenWaterIndicator({
     super.key,
     required this.screenHeight,
     required this.screenWidth,
-    required this.onPressed,
+    required this.onPressed, required this.goalCompletion,
   });
 
   @override
@@ -47,13 +48,13 @@ class HomeScreenWaterIndicator extends StatelessWidget {
             ),
           ],
         ),
-        const Center(
+         Center(
           child: Text(
-            "60%",
-            style: TextStyle(
-              fontSize: 28,
+            "${goalCompletion.toString()}%",
+            style: const TextStyle(
+              fontSize: 30,
               color: Colors.white,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w900,
             ),
           ),
         ),

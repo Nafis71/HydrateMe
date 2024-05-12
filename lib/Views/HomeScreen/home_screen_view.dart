@@ -2,31 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:water_tracker/HiveBoxes/boxes.dart';
+import 'package:water_tracker/Utils/hive_boxes.dart';
 import 'package:water_tracker/Models/bottom_sheet_contents.dart';
 import 'package:water_tracker/Models/person_data.dart';
 import 'package:water_tracker/Models/water_intake_model.dart';
-import 'package:water_tracker/Widgets/appbar_icon_button.dart';
-import 'package:water_tracker/Widgets/home_screen_bottom_layout.dart';
-import 'package:water_tracker/Widgets/home_screen_bottom_sheet.dart';
-import 'package:water_tracker/Widgets/home_screen_greetings_layout.dart';
-import 'package:water_tracker/Widgets/home_screen_recently_drank_info.dart';
-import 'package:water_tracker/Widgets/home_screen_water_indicator.dart';
+import 'package:water_tracker/Views/HomeScreen/home_screen_bottom_layout.dart';
+import 'package:water_tracker/Views/HomeScreen/home_screen_bottom_sheet.dart';
+import 'package:water_tracker/Views/HomeScreen/home_screen_recently_drank_info.dart';
+import '../Components/appbar_icon_button.dart';
+import 'home_screen_greetings_layout.dart';
+import 'home_screen_water_indicator.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class HomeScreenView extends StatefulWidget {
+  const HomeScreenView({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeScreenView> createState() => _HomeScreenViewState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+class _HomeScreenViewState extends State<HomeScreenView> {
   late final PersonData personData;
   late TextEditingController _drinkSizeController;
   Color bottomSheetEditBoxColor = Colors.blue;
-  int drankWater = 0;
+  int goalCompletion = 0;
   double _selectedDrinkQuantity = 0.0;
   String selectedDrink = "";
+  IconData selectedDrinkIcon = Icons.water_drop;
 
   @override
   void initState() {
@@ -54,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
+    int drankWater = calculateDailyWaterIntake();
     return Scaffold(
       appBar: AppBar(
         title: const Text("HydrateMe"),
@@ -93,6 +95,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               child: HomeScreenWaterIndicator(
                                 screenHeight: screenHeight,
                                 screenWidth: screenWidth,
+                                goalCompletion: goalCompletion,
                                 onPressed: () {
                                   launchWaterIntakeMenu();
                                 },
@@ -165,21 +168,38 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     if (selectedDrink != "" && _selectedDrinkQuantity > 0) {
       DateTime dateTime = DateTime.now();
       final data = WaterIntakeModel(
-          drinkName: selectedDrink,
-          drinkSize: _selectedDrinkQuantity.toInt().toString(),
-          dateTime: dateTime);
+        drinkName: selectedDrink,
+        drinkSize: _selectedDrinkQuantity.toInt().toString(),
+        dateTime: dateTime,
+      );
       Navigator.pop(context);
       saveToDatabase(data);
     }
   }
 
-  Future<void> saveToDatabase(WaterIntakeModel data) async {
-    Box hiveBox = Boxes.getData();
+  void saveToDatabase(WaterIntakeModel data) {
+    Box hiveBox = HiveBoxes.getData();
     hiveBox.add(data);
+    setState(() {});
   }
 
   String getDateTime() {
     String dateTimeNow = DateFormat.MMMMEEEEd().format(DateTime.now());
     return dateTimeNow;
+  }
+
+  int calculateDailyWaterIntake() {
+    int totalDrank = 0;
+    Box hiveBox = HiveBoxes.getData();
+    String dateOfToday = DateFormat.yMMMd().format(DateTime.now());
+    for (int index = 0; index < hiveBox.length; index++) {
+      if (DateFormat.yMMMd().format(hiveBox.get(index).dateTime) ==
+          dateOfToday) {
+        totalDrank += int.tryParse(hiveBox.get(index).drinkSize) ?? 0;
+      }
+    }
+    goalCompletion =
+        ((totalDrank / personData.calculateWaterIntakeGoal()) * 100).toInt();
+    return totalDrank;
   }
 }

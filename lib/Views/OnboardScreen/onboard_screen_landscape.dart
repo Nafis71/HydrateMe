@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../Models/onboard_contents.dart';
+import '../../Models/onboard_contents.dart';
 
 class OnboardScreenLandscape extends StatelessWidget {
   final int index;

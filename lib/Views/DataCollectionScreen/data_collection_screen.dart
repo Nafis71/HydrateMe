@@ -2,20 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:water_tracker/Enums/routes.dart';
+import 'package:water_tracker/Controllers/data_collection_controller.dart';
+import 'package:water_tracker/Utils/routes.dart';
 import 'package:widget_and_text_animator/widget_and_text_animator.dart';
+import '../Components/data_collection_screen_form_layout.dart';
 
-import '../Widgets/data_collection_screen_form_layout.dart';
-
-class DataCollectionScreen extends StatefulWidget {
-  const DataCollectionScreen({super.key});
+class DataCollectionScreenView extends StatefulWidget {
+  const DataCollectionScreenView({super.key});
 
   @override
-  State<DataCollectionScreen> createState() => _DataCollectionScreenState();
+  State<DataCollectionScreenView> createState() =>
+      _DataCollectionScreenViewState();
 }
 
-class _DataCollectionScreenState extends State<DataCollectionScreen> {
-  late SharedPreferences preferences;
+class _DataCollectionScreenViewState extends State<DataCollectionScreenView> {
+  late final DataCollectionController dataCollectionController;
   late final GlobalKey<FormState> formKey;
   List<String> genderRadioOptions = ["Male", "Female"];
   late TextEditingController _nameController;
@@ -33,7 +34,8 @@ class _DataCollectionScreenState extends State<DataCollectionScreen> {
   }
 
   Future<void> initializeSharedPreference() async {
-    preferences = await SharedPreferences.getInstance();
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    dataCollectionController = DataCollectionController(preferences);
   }
 
   @override
@@ -147,26 +149,26 @@ class _DataCollectionScreenState extends State<DataCollectionScreen> {
 
   void checkUserData() {
     if (formKey.currentState!.validate()) {
-      const AlertDialog(title: Text("Wait Loading"));
       saveData();
       return;
     }
   }
 
   void saveData() {
-    preferences.setString("userName", _nameController.text);
-    preferences.setString("userAge", _ageController.text);
-    preferences.setString("userGender", gender);
-    preferences.setBool("hasRegistered", true);
+    dataCollectionController.saveData(
+        _nameController.text, _ageController.text, gender);
     gotoHomeScreen();
   }
 
   void gotoHomeScreen() {
     loadingScreen();
-    Future.delayed(const Duration(seconds: 3), () {
-      Navigator.of(context).pop();
-      Navigator.pushReplacementNamed(context, Routes.homeScreen.toString(),arguments: preferences);
-    });
+    Future.delayed(
+      const Duration(seconds: 3),
+      () {
+        Navigator.of(context).pop();
+        Navigator.pushReplacementNamed(context, Routes.homeScreen.toString());
+      },
+    );
   }
 
   Future loadingScreen() async {

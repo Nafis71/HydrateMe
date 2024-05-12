@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:water_tracker/Widgets/text_form_field.dart';
-
+import 'package:water_tracker/Utils/constants.dart';
+import 'package:water_tracker/Views/Components/text_form_field.dart';
 import 'app_radio_list_tile.dart';
 
 class DataCollectionScreenFormLayout extends StatelessWidget {
@@ -33,9 +33,9 @@ class DataCollectionScreenFormLayout extends StatelessWidget {
         children: [
           FormTextField(
             controller: nameController,
-            hintText: "Enter your name",
-            errorText: "Invalid Name",
-            regExpression: r'^[a-z A-Z]+$',
+            hintText: nameEditingField,
+            errorText: invalidNameError,
+            regExpression: regEXName,
             textInputType: TextInputType.text,
           ),
           const SizedBox(
@@ -43,9 +43,9 @@ class DataCollectionScreenFormLayout extends StatelessWidget {
           ),
           FormTextField(
             controller: ageController,
-            hintText: "Enter your age",
-            errorText: "Invalid Age",
-            regExpression: r'^[0-9]+$',
+            hintText: ageEditingField,
+            errorText: invalidAgeError,
+            regExpression: regExAge,
             textInputType: TextInputType.number,
           ),
           const SizedBox(

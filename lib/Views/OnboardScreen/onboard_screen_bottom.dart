@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../Models/onboard_contents.dart';
+import '../../Models/onboard_contents.dart';
 import 'onboard_page_counter.dart';
 
 class OnboardScreenBottom extends StatelessWidget {

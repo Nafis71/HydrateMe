@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:water_tracker/Enums/routes.dart';
+import 'package:water_tracker/Utils/routes.dart';
 import 'package:water_tracker/Models/onboard_contents.dart';
 import 'package:water_tracker/Models/water_intake_model.dart';
-import 'package:water_tracker/Widgets/onboard_screen_layout.dart';
+import 'package:water_tracker/Views/OnboardScreen/onboard_screen_layout.dart';
 
-class OnboardScreen extends StatefulWidget {
+class OnboardScreenView extends StatefulWidget {
 
-  const OnboardScreen({super.key,});
+  const OnboardScreenView({super.key,});
 
   @override
-  State<OnboardScreen> createState() => _OnboardScreenState();
+  State<OnboardScreenView> createState() => _OnboardScreenViewState();
 }
 
-class _OnboardScreenState extends State<OnboardScreen> {
+class _OnboardScreenViewState extends State<OnboardScreenView> {
   int currentIndex = 0;
 
   late PageController _pageController;
@@ -26,10 +26,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
     super.initState();
   }
 
-  initializeHive() async{
-    Hive.registerAdapter(WaterIntakeModelAdapter());
-    await Hive.openBox<WaterIntakeModel>("WaterIntake");
-  }
+
 
   void initializeSharedPreference() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -37,7 +34,6 @@ class _OnboardScreenState extends State<OnboardScreen> {
     if (isRegistered != null) {
       skipScreen(preferences);
     }
-    initializeHive();
   }
 
   void skipScreen(SharedPreferences preferences) {

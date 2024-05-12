@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../Models/onboard_contents.dart';
+import '../../Models/onboard_contents.dart';
 import 'onboard_screen_bottom.dart';
 import 'onboard_screen_landscape.dart';
 import 'onboard_screen_portrait.dart';

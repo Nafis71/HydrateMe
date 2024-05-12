@@ -1,28 +1,26 @@
-
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:water_tracker/Enums/routes.dart';
-import 'package:water_tracker/Screens/data_collection_screen.dart';
-import 'package:water_tracker/Screens/home_screen.dart';
-import 'package:water_tracker/Screens/onboard_screen.dart';
-import 'package:water_tracker/Screens/water_intake_menu.dart';
-import 'package:water_tracker/Themes/elevated_button_style.dart';
 import 'package:water_tracker/Themes/appbar_themes.dart';
+import 'package:water_tracker/Themes/elevated_button_style.dart';
 import 'package:water_tracker/Themes/form_text_field_themes.dart';
+import 'package:water_tracker/Utils/routes.dart';
+import 'Models/water_intake_model.dart';
 
-main() async{
+main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Directory directory = await getApplicationDocumentsDirectory();
   Hive.init(directory.path);
+  Hive.registerAdapter(WaterIntakeModelAdapter());
+  await Hive.openBox<WaterIntakeModel>("WaterIntake");
   runApp(const WaterTracker());
 }
 
 class WaterTracker extends StatelessWidget {
-  const WaterTracker({super.key,});
+  const WaterTracker({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -39,15 +37,5 @@ class WaterTracker extends StatelessWidget {
         elevatedButtonTheme: ElevatedButtonStyle.getElevatedButtonStyle(),
       ),
     );
-  }
-
-  MaterialPageRoute? generateRoute(RouteSettings routeSettings) {
-    final Map<String, WidgetBuilder> routes = {
-      Routes.onBoardScreen.toString(): (context) => const OnboardScreen(),
-      Routes.homeScreen.toString(): (context) => const HomeScreen(),
-      Routes.dataCollectionScreen.toString() : (context) => const DataCollectionScreen(),
-    };
-    final WidgetBuilder? builder = routes[routeSettings.name];
-    return (builder != null) ? MaterialPageRoute(builder: builder) : null;
   }
 }

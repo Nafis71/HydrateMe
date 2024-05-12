@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import '../Models/onboard_contents.dart';
+import '../../Models/onboard_contents.dart';
 
 class OnboardScreenPortrait extends StatelessWidget {
   final int index;

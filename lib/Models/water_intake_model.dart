@@ -1,8 +1,9 @@
 import 'package:hive/hive.dart';
+
 part 'water_intake_model.g.dart';
 
 @HiveType(typeId: 0)
-class WaterIntakeModel extends HiveObject{
+class WaterIntakeModel extends HiveObject {
   @HiveField(0)
   String drinkName;
 
@@ -12,8 +13,9 @@ class WaterIntakeModel extends HiveObject{
   @HiveField(2)
   DateTime dateTime;
 
-  WaterIntakeModel(
-      {required this.drinkName,
-      required this.drinkSize,
-      required this.dateTime});
+  WaterIntakeModel({
+    required this.drinkName,
+    required this.drinkSize,
+    required this.dateTime,
+  });
 }
