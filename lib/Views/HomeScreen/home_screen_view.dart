@@ -6,6 +6,7 @@ import 'package:water_tracker/Utils/hive_boxes.dart';
 import 'package:water_tracker/Models/bottom_sheet_contents.dart';
 import 'package:water_tracker/Models/person_data.dart';
 import 'package:water_tracker/Models/water_intake_model.dart';
+import 'package:water_tracker/Utils/routes.dart';
 import 'package:water_tracker/Views/HomeScreen/home_screen_bottom_layout.dart';
 import 'package:water_tracker/Views/HomeScreen/home_screen_bottom_sheet.dart';
 import 'package:water_tracker/Views/HomeScreen/home_screen_recently_drank_info.dart';
@@ -59,9 +60,18 @@ class _HomeScreenViewState extends State<HomeScreenView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("HydrateMe"),
-        actions: const [
-          AppBarIconButton(desiredIcon: Icons.notifications_none),
-          AppBarIconButton(desiredIcon: Icons.history),
+        actions: [
+          AppBarIconButton(
+            desiredIcon: Icons.notification_add,
+            onPressed: () {
+              Navigator.pushNamed(
+                  context, Routes.addNotificationScreen.toString());
+            },
+          ),
+          AppBarIconButton(
+            desiredIcon: Icons.history,
+            onPressed: () {},
+          ),
         ],
       ),
       body: SafeArea(
@@ -105,7 +115,7 @@ class _HomeScreenViewState extends State<HomeScreenView> {
                               screenHeight: screenHeight,
                               screenWidth: screenWidth,
                               orientation: orientation,
-                              drank: drankWater,
+                              drankWater: drankWater,
                             ),
                           ],
                         ),

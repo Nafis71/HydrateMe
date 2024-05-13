@@ -4,17 +4,20 @@ import 'package:intl/intl.dart';
 import 'package:water_tracker/Utils/hive_boxes.dart';
 import 'package:water_tracker/Models/water_intake_model.dart';
 
+import '../../Utils/colors.dart';
+import '../../Utils/constants.dart';
+
 class HomeScreenRecentlyDrankInfo extends StatelessWidget {
   final double screenWidth, screenHeight;
   final Orientation orientation;
-  final int drank;
+  final int drankWater;
 
   const HomeScreenRecentlyDrankInfo({
     super.key,
     required this.screenHeight,
     required this.screenWidth,
     required this.orientation,
-    required this.drank,
+    required this.drankWater,
   });
 
   @override
@@ -32,14 +35,14 @@ class HomeScreenRecentlyDrankInfo extends StatelessWidget {
              mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                "Recently Drank",
+                recentlyDrankText,
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               ),
               InkWell(
                 splashColor: Colors.transparent,
                 onTap: (){},
                 child: const Text(
-                  "View All",
+                  viewAllText,
                   style: TextStyle(fontSize: 14,color: Colors.grey,fontWeight: FontWeight.bold),
                 ),
               )
@@ -52,7 +55,7 @@ class HomeScreenRecentlyDrankInfo extends StatelessWidget {
             height: 5,
           ),
 
-          (drank != 0) ? recentlyDrankWaterLayout(model) : noRecordLayout(),
+          (drankWater != 0) ? recentlyDrankWaterLayout(model) : noRecordLayout(),
         ],
       ),
     );
@@ -70,12 +73,12 @@ class HomeScreenRecentlyDrankInfo extends StatelessWidget {
                   style: const TextStyle(
                       fontSize: 15, fontWeight: FontWeight.w600),
                 ),
-                tileColor: Colors.blue[50],
+                tileColor: lightBlue,
                 leading: Icon(
                   getIcon(waterIntakeModel, index),
                   size: 28,
                 ),
-                subtitle: Text("${waterIntakeModel[index].drinkSize}ml"),
+                subtitle: Text("${waterIntakeModel[index].drinkSize}$sizeMetric"),
                 
                 trailing: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -88,8 +91,8 @@ class HomeScreenRecentlyDrankInfo extends StatelessWidget {
                     ),
                     Text(
                       DateFormat.jm().format(waterIntakeModel[index].dateTime),
-                      style: TextStyle(
-                        color: Colors.grey[600],
+                      style: const TextStyle(
+                        color: deepGray,
                         fontSize: 14,
                       ),
                     ),
@@ -111,10 +114,10 @@ class HomeScreenRecentlyDrankInfo extends StatelessWidget {
 
   Widget noRecordLayout() => ListTile(
         title: const Text(
-          "You haven't yet consumed any water.",
+          noRecordOfWaterConsumptionText,
           style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
         ),
-        tileColor: Colors.blue[50],
+        tileColor: lightBlue,
         leading: const Icon(
           Icons.info_outline,
           size: 28,

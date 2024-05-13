@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:water_tracker/Utils/constants.dart';
 import '../../Models/bottom_sheet_contents.dart';
 import '../Components/bottom_sheet_container.dart';
 
@@ -31,7 +32,7 @@ class HomeScreenBottomSheet extends StatelessWidget {
                   const Wrap(
                     children: [
                       Text(
-                        "Choose drink type",
+                        bottomSheetDrinkTypeHeader,
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
@@ -42,7 +43,7 @@ class HomeScreenBottomSheet extends StatelessWidget {
                   const Wrap(
                     children: [
                       Text(
-                        "Select what you actually drink",
+                        bottomSheetDrinkTypeSecondaryHeader,
                         style: TextStyle(
                           fontSize: 12,
                           color: Colors.grey,
@@ -95,9 +96,9 @@ class HomeScreenBottomSheet extends StatelessWidget {
                     decoration: const InputDecoration(
                       floatingLabelAlignment: FloatingLabelAlignment.center,
                       labelStyle: TextStyle(color: Colors.blue, fontSize: 16),
-                      labelText: "Enter size of the drink",
+                      labelText: bottomSheetDrinkTypeEditBoxText,
                       hintFadeDuration: Duration(seconds: 1),
-                      hintText: "Enter size of the drink",
+                      hintText: bottomSheetDrinkTypeEditBoxText,
                       contentPadding: EdgeInsets.all(15.00),
                       prefixIcon: Icon(Icons.water_drop),
                       prefixIconColor: Colors.blue,
@@ -123,7 +124,7 @@ class HomeScreenBottomSheet extends StatelessWidget {
                         drinkSizeController.clear();
                       },
                       child: const Text(
-                        "ADD DRINK",
+                        bottomSheetAddDrinkButtonText,
                         style: TextStyle(fontSize: 15),
                       ),
                     ),

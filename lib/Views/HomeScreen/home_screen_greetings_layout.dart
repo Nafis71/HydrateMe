@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:water_tracker/Models/person_data.dart';
+import 'package:water_tracker/Utils/constants.dart';
 
 class HomeScreenGreetingsLayout extends StatelessWidget {
   final PersonData personData = PersonData();
@@ -16,7 +17,7 @@ class HomeScreenGreetingsLayout extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.00),
               child: Text(
-                "Hi, ${personData.getName}",
+                "$homeScreenGreeting ${personData.getName}",
                 style: const TextStyle(
                     fontSize: 16, fontWeight: FontWeight.w400),
               ),

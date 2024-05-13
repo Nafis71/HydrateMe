@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:water_tracker/Utils/constants.dart';
+import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 
 class HomeScreenWaterIndicator extends StatelessWidget {
   final double screenWidth, screenHeight;
@@ -24,22 +26,25 @@ class HomeScreenWaterIndicator extends StatelessWidget {
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
             ),
-            child: Lottie.asset("assets/lottieFiles/water.json",
+            child: Lottie.asset(waterBallLottie,
                 renderCache: RenderCache.drawingCommands, fit: BoxFit.contain),
           ),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            CircleAvatar(
-              radius: 30,
-              backgroundColor: Colors.blue[50],
-              child: IconButton(
-                onPressed: ()=> onPressed(),
-                icon: const Icon(
-                  Icons.water_drop_rounded,
-                  color: Color(0xFF2AA2D6),
-                  size: 30,
+            WidgetAnimator(
+              atRestEffect: WidgetRestingEffects.wave(numberOfPlays: 2),
+              child: CircleAvatar(
+                radius: 30,
+                backgroundColor: Colors.blue[50],
+                child: IconButton(
+                  onPressed: ()=> onPressed(),
+                  icon: const Icon(
+                    Icons.water_drop_rounded,
+                    color: Color(0xFF2AA2D6),
+                    size: 30,
+                  ),
                 ),
               ),
             ),

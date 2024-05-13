@@ -18,7 +18,10 @@ class AppRadioListTile extends StatelessWidget {
       tileColor: Colors.blue[50],
       contentPadding: const EdgeInsets.all(5.00),
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30),topRight: Radius.circular(30.00)),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(30),
+          topRight: Radius.circular(30.00),
+        ),
       ),
       value: genderRadioOption,
       activeColor: Colors.blue,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:water_tracker/Models/person_data.dart';
+import '../../Utils/colors.dart';
 
 class HomeScreenBottomLayout extends StatelessWidget {
   final double screenWidth, screenHeight;
@@ -80,7 +81,7 @@ class HomeScreenBottomLayout extends StatelessWidget {
                         child: Text(
                           "${drankWater.toString()}ml",
                           style: const TextStyle(
-                            color: Color(0xFF2AA2D6),
+                            color: appPrimaryColor,
                             fontSize: 20,
                             fontWeight: FontWeight.w500,
                           ),
@@ -140,7 +141,7 @@ class HomeScreenBottomLayout extends StatelessWidget {
                         child: Text(
                           "${personData.calculateWaterIntakeGoal().toString()}ml",
                           style: const TextStyle(
-                            color: Color(0xFF2AA2D6),
+                            color: appPrimaryColor,
                             fontSize: 20,
                             fontWeight: FontWeight.w500,
                           ),
