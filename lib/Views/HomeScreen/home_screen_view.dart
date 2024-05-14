@@ -188,7 +188,7 @@ class _HomeScreenViewState extends State<HomeScreenView> {
   }
 
   void saveToDatabase(WaterIntakeModel data) {
-    Box hiveBox = HiveBoxes.getData();
+    Box hiveBox = HiveBoxes.getWaterIntakeData();
     hiveBox.add(data);
     setState(() {});
   }
@@ -200,7 +200,7 @@ class _HomeScreenViewState extends State<HomeScreenView> {
 
   int calculateDailyWaterIntake() {
     int totalDrank = 0;
-    Box hiveBox = HiveBoxes.getData();
+    Box hiveBox = HiveBoxes.getWaterIntakeData();
     String dateOfToday = DateFormat.yMMMd().format(DateTime.now());
     for (int index = 0; index < hiveBox.length; index++) {
       if (DateFormat.yMMMd().format(hiveBox.get(index).dateTime) ==

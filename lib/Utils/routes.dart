@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:water_tracker/Views/NotificationScreen/add_notification_screen.dart';
+import 'package:water_tracker/Views/NotificationScreen/water_reminder_screen_view.dart';
 
 import '../Views/DataCollectionScreen/data_collection_screen.dart';
 import '../Views/HomeScreen/home_screen_view.dart';
@@ -20,7 +20,7 @@ MaterialPageRoute? generateRoute(RouteSettings routeSettings) {
     Routes.dataCollectionScreen.toString(): (context) =>
         const DataCollectionScreenView(),
     Routes.addNotificationScreen.toString(): (context) =>
-        const AddNotificationScreen(),
+        const WaterReminderScreenView(),
   };
   final WidgetBuilder? builder = routes[routeSettings.name];
   return (builder != null) ? MaterialPageRoute(builder: builder) : null;

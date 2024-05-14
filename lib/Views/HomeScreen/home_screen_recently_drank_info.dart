@@ -139,7 +139,7 @@ class HomeScreenRecentlyDrankInfo extends StatelessWidget {
 
   List<WaterIntakeModel> getRecentDrinkInfo() {
     List<WaterIntakeModel> models = [];
-    Box hiveBox = HiveBoxes.getData();
+    Box hiveBox = HiveBoxes.getWaterIntakeData();
     int length = hiveBox.length;
     try {
       for (int index = length - 1; index > length - 4; index--) {

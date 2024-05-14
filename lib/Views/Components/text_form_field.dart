@@ -5,7 +5,7 @@ class FormTextField extends StatelessWidget {
   final TextInputType textInputType;
   final TextEditingController controller;
 
-  FormTextField({
+  const FormTextField({
     super.key,
     required this.hintText,
     required this.errorText,

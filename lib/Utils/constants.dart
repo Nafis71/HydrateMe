@@ -21,6 +21,9 @@ const String noRecordOfWaterConsumptionText = "You haven't yet consumed any wate
 const String recentlyDrankText = "Recently Drank";
 const String viewAllText = "View All";
 
+//notificationConstants
+const String alertDialogHeader = "Add Reminder";
+
 
 //universals
 const String sizeMetric = "ml";
