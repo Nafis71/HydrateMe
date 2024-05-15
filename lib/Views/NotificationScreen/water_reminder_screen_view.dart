@@ -1,18 +1,13 @@
-import 'dart:math';
-
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive/hive.dart';
+import 'package:water_tracker/Controllers/water_reminder_controller.dart';
 import 'package:water_tracker/Models/notification_register_model.dart';
 import 'package:water_tracker/Services/NotificationService.dart';
 import 'package:water_tracker/Utils/hive_boxes.dart';
 import 'package:water_tracker/Views/NotificationScreen/water_reminder_alert_dialog.dart';
 import 'package:water_tracker/Views/NotificationScreen/water_reminder_no_notification_layout.dart';
 import 'package:water_tracker/Views/NotificationScreen/water_reminder_notification_list_layout.dart';
-
 import '../../Utils/colors.dart';
-import '../../Utils/constants.dart';
 
 class WaterReminderScreenView extends StatefulWidget {
   const WaterReminderScreenView({super.key});
@@ -27,19 +22,19 @@ class _WaterReminderScreenViewState extends State<WaterReminderScreenView> {
   bool isRepeatable = true;
   late Orientation screenOrientation;
   late List<NotificationRegisterModel> models;
+  late final WaterReminderController waterReminderController;
   Box hiveBox = HiveBoxes.getNotificationData();
 
   @override
   void initState() {
+    waterReminderController = WaterReminderController(context);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    models = getNotificationModels();
+    models = waterReminderController.getNotificationModels();
     int itemCount = models.length;
-    double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Reminder"),
@@ -52,7 +47,13 @@ class _WaterReminderScreenViewState extends State<WaterReminderScreenView> {
                 itemBuilder: (context, index) {
                   return NotificationListLayout(
                       removeFromList: () {
-                        _removeNotificationRegistry(index, models[index]);
+                        waterReminderController.removeNotificationRegistry(
+                          index: index,
+                          notificationRegisterModel: models[index],
+                          models: models,
+                          hiveBox: hiveBox,
+                        );
+                        setState(() {});
                       },
                       models: models,
                       notificationSettingToggle: (value) {
@@ -62,9 +63,7 @@ class _WaterReminderScreenViewState extends State<WaterReminderScreenView> {
                       index: index);
                 },
                 separatorBuilder: (BuildContext context, int index) {
-                  return const SizedBox(
-                    height: 10,
-                  );
+                  return const SizedBox(height: 10);
                 },
               ),
       ),
@@ -88,27 +87,6 @@ class _WaterReminderScreenViewState extends State<WaterReminderScreenView> {
     );
   }
 
-  void _removeNotificationRegistry(
-      int index, NotificationRegisterModel notificationRegisterModel) async {
-    AwesomeNotifications().cancelSchedule(models[index].id);
-    models.removeAt(index);
-    await notificationRegisterModel.delete();
-    if (hiveBox.isEmpty) {
-      hiveBox.clear();
-    }
-    setState(() {});
-  }
-
-  List<NotificationRegisterModel> getNotificationModels() {
-    List<NotificationRegisterModel> models = [];
-    Box hiveBox = HiveBoxes.getNotificationData();
-    int length = hiveBox.length;
-    for (int index = 0; index < length; index++) {
-      models.add(hiveBox.get(index));
-    }
-    return models;
-  }
-
   void showAlertDialog() {
     selectedTime = TimeOfDay.now();
     showDialog(
@@ -118,7 +96,9 @@ class _WaterReminderScreenViewState extends State<WaterReminderScreenView> {
           return WaterReminderAlertDialog(
             selectedTime: selectedTime,
             chooseTime: () async {
-              selectedTime = await launchTimePicker(selectedTime!);
+              selectedTime = await waterReminderController.launchTimePicker(
+                selectedTime!,
+              );
               setDialogState(() {});
             },
             changeNotificationMode: (value) {
@@ -126,45 +106,16 @@ class _WaterReminderScreenViewState extends State<WaterReminderScreenView> {
               setDialogState(() {});
             },
             isRepeatable: isRepeatable,
-            setReminder: setReminder,
+            setReminder: () {
+              waterReminderController.setReminder(
+                  hiveBox: hiveBox,
+                  selectedTime: selectedTime!,
+                  isRepeatable: isRepeatable);
+              setState(() {});
+            },
           );
         },
       ),
     );
-  }
-
-  Future<TimeOfDay?> launchTimePicker(TimeOfDay timeOfDay) async {
-    return selectedTime = await showTimePicker(
-      confirmText: "Select",
-      context: context,
-      initialTime: timeOfDay,
-    );
-  }
-
-  void setReminder() {
-    Random random = Random();
-    int id = random.nextInt(999);
-    NotificationService.createScheduledNotification(
-        id: id,
-        channelKey: "TestingChannel",
-        title: "You need to drink water",
-        body: "You have added an alarm to remind you to drink water",
-        hour: selectedTime!.hour.toInt(),
-        minute: selectedTime!.minute.toInt(),
-        second: 0,
-        repeat: false);
-    saveToDatabase(id);
-  }
-
-  void saveToDatabase(int id) {
-    NotificationRegisterModel notificationModel = NotificationRegisterModel(
-      id: id,
-      time: selectedTime!.format(context).toString(),
-      repeatType: (isRepeatable) ? "Repeat" : "Once",
-      isReminderEnabled: true,
-    );
-    hiveBox.add(notificationModel);
-    print(hiveBox.values);
-    setState(() {});
   }
 }
