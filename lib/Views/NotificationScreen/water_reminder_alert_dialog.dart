@@ -22,33 +22,31 @@ class WaterReminderAlertDialog extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
-          content: SizedBox(
-            height: (orientation == Orientation.portrait)
-                ? MediaQuery.of(context).size.height * 0.2
-                : MediaQuery.of(context).size.height * 0.5,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Wrap(
-                  spacing: 3,
-                  children: [
-                    Text(
-                      selectedTime!.format(context),
-                      style: const TextStyle(
-                          fontSize: 28, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                ElevatedButton.icon(
-                  onPressed: () async {
-                    chooseTime();
-                  },
-                  icon: const Icon(Icons.watch_later_outlined),
-                  label: const Text("Choose Time"),
-                ),
-                const SizedBox(height: 10),
-                CheckboxListTile(
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Wrap(
+                spacing: 2,
+                children: [
+                  Text(
+                    selectedTime!.format(context),
+                    style: const TextStyle(
+                        fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 5),
+              ElevatedButton.icon(
+                onPressed: () async {
+                  chooseTime();
+                },
+                icon: const Icon(Icons.watch_later_outlined),
+                label: const Text("Choose Time"),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.09,
+                child: CheckboxListTile(
                   title: const Text("Repeat"),
                   value: isRepeatable,
                   onChanged: (value) {
@@ -56,8 +54,8 @@ class WaterReminderAlertDialog extends StatelessWidget {
                   },
                   activeColor: appPrimaryColor,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
           actions: [
             TextButton(

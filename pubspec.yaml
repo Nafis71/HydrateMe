@@ -45,7 +45,7 @@ dependencies:
   intl: ^0.19.0
   awesome_notifications: ^0.9.3+1
   flutter_slidable: ^3.1.0
-
+  device_preview_minus: ^1.0.4
 
 
 dev_dependencies:

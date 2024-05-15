@@ -6,23 +6,27 @@ class BottomSheetContainer extends StatelessWidget {
   final String cardHeader;
   final IconData icon;
   final int index;
+  final Orientation orientation;
 
-  const BottomSheetContainer(
-      {super.key,
-      required this.backgroundColor,
-      required this.borderColor,
-      required this.cardHeader,
-      required this.icon, required this.index});
+  const BottomSheetContainer({
+    super.key,
+    required this.backgroundColor,
+    required this.borderColor,
+    required this.cardHeader,
+    required this.icon,
+    required this.index,
+    required this.orientation,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(5.00),
-      width: MediaQuery.of(context).size.width * 0.4,
-      height: MediaQuery.of(context).size.height * 0.12,
       decoration: BoxDecoration(
         color: backgroundColor,
-        border: (containerContents[index].isSelected) ? Border.all(color: borderColor, width: 2) : Border.all(color: Colors.white, width: 0.5),
+        border: (containerContents[index].isSelected)
+            ? Border.all(color: borderColor, width: 2)
+            : Border.all(color: Colors.white, width: 0.5),
         borderRadius: BorderRadius.circular(20.00),
       ),
       alignment: Alignment.topLeft,
@@ -62,7 +66,7 @@ class BottomSheetContainer extends StatelessWidget {
                   "Add a $cardHeader",
                   style: TextStyle(
                     color: borderColor,
-                    fontSize: 14,
+                    fontSize: 12,
                   ),
                 ),
               ],

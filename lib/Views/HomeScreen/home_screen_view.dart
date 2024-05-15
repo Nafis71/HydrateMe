@@ -147,10 +147,15 @@ class _HomeScreenViewState extends State<HomeScreenView> {
       backgroundColor: Colors.white,
       showDragHandle: true,
       isScrollControlled: true,
-      builder: (context) => HomeScreenBottomSheet(
-        drinkSizeController: _drinkSizeController,
-        onContainerTap: chooseContainer,
-        addWaterIntake: addWaterIntake,
+      builder: (context) => OrientationBuilder(
+        builder: (BuildContext context, Orientation orientation) {
+          return HomeScreenBottomSheet(
+            orientation: orientation,
+            drinkSizeController: _drinkSizeController,
+            onContainerTap: chooseContainer,
+            addWaterIntake: addWaterIntake,
+          );
+        },
       ),
     );
   }

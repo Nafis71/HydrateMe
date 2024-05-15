@@ -7,18 +7,22 @@ class HomeScreenBottomSheet extends StatelessWidget {
   final TextEditingController drinkSizeController;
   final Function(int) onContainerTap;
   final Function(BuildContext) addWaterIntake;
+  final Orientation orientation;
 
   const HomeScreenBottomSheet(
       {super.key,
       required this.drinkSizeController,
       required this.onContainerTap,
-      required this.addWaterIntake});
+      required this.addWaterIntake,
+      required this.orientation});
 
   @override
   Widget build(BuildContext context) {
     return StatefulBuilder(
       builder: (context, setModalState) => SizedBox(
-        height: MediaQuery.of(context).size.height * 0.6,
+        height: (orientation == Orientation.portrait)
+            ? MediaQuery.of(context).size.height * 0.6
+            : MediaQuery.of(context).size.height * 0.8,
         width: MediaQuery.of(context).size.width,
         child: Padding(
           padding:
@@ -56,14 +60,19 @@ class HomeScreenBottomSheet extends StatelessWidget {
                     height: 10,
                   ),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.27,
+                    height: (orientation == Orientation.portrait)
+                        ? MediaQuery.of(context).size.height * 0.35
+                        : MediaQuery.of(context).size.height * 0.7,
                     child: GridView.builder(
                       itemCount: containerContents.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
+                      primary: true,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 10,
-                        childAspectRatio: 1.7,
+                        childAspectRatio:
+                            (orientation == Orientation.landscape) ? 2.5 : 1.55,
                         mainAxisSpacing: 10,
                       ),
                       itemBuilder: (context, index) => InkWell(
@@ -75,6 +84,7 @@ class HomeScreenBottomSheet extends StatelessWidget {
                             setModalState(() {});
                           },
                           child: BottomSheetContainer(
+                            orientation: orientation,
                             backgroundColor:
                                 containerContents[index].backgroundColor,
                             borderColor: containerContents[index].borderColor,
@@ -87,7 +97,7 @@ class HomeScreenBottomSheet extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(
-                    height: 15,
+                    height: 5,
                   ),
                   TextFormField(
                     textAlign: TextAlign.center,
@@ -112,12 +122,14 @@ class HomeScreenBottomSheet extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 80,
+                  SizedBox(
+                    height: (orientation == Orientation.portrait) ? 20 : 20,
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.06,
+                    height: (orientation == Orientation.portrait)
+                        ? MediaQuery.of(context).size.height * 0.07
+                        : MediaQuery.of(context).size.height * 0.15,
                     child: ElevatedButton(
                       onPressed: () {
                         addWaterIntake(context);
@@ -128,6 +140,9 @@ class HomeScreenBottomSheet extends StatelessWidget {
                         style: TextStyle(fontSize: 15),
                       ),
                     ),
+                  ),
+                  SizedBox(
+                    height: (orientation == Orientation.portrait) ? 10 : 10,
                   ),
                 ],
               ),
