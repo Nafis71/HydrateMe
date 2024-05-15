@@ -68,11 +68,8 @@ class _HomeScreenViewState extends State<HomeScreenView> {
                   context, Routes.addNotificationScreen.toString());
             },
           ),
-          AppBarIconButton(
-            desiredIcon: Icons.history,
-            onPressed: () {},
-          ),
         ],
+        centerTitle: false,
       ),
       body: SafeArea(
         child: OrientationBuilder(

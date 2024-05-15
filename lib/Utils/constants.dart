@@ -31,3 +31,19 @@ const String sizeMetric = "ml";
 
 //assets
 const waterBallLottie = "assets/lottieFiles/water.json";
+
+
+//notificationService
+const notificationChannelGroupKey = "ScheduledChannelGroup";
+const notificationChannelGroupName = "Scheduled Channel Group";
+const notificationChannelName = "Water Reminder Channel";
+const notificationChannelKey = "ScheduledChannel";
+const notificationChannelDescription = "Notification channel for reminding water intake";
+const notificationTitle = "You need to drink water";
+const notificationBody = "You have added an alarm to remind you to drink water";
+const nonRepeatedNotificationText = "Once";
+const repeatedNotificationText = "Repeat";
+
+//timePicketTexts
+const String selectText = "Select";
+

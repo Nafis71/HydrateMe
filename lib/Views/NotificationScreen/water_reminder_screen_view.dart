@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hive/hive.dart';
 import 'package:water_tracker/Controllers/water_reminder_controller.dart';
 import 'package:water_tracker/Models/notification_register_model.dart';
-import 'package:water_tracker/Services/NotificationService.dart';
+import 'package:water_tracker/Services/notification_service.dart';
 import 'package:water_tracker/Utils/hive_boxes.dart';
 import 'package:water_tracker/Views/NotificationScreen/water_reminder_alert_dialog.dart';
 import 'package:water_tracker/Views/NotificationScreen/water_reminder_no_notification_layout.dart';
@@ -42,30 +43,55 @@ class _WaterReminderScreenViewState extends State<WaterReminderScreenView> {
       body: SafeArea(
         child: (itemCount == 0)
             ? const NoNotificationLayout()
-            : ListView.separated(
-                itemCount: itemCount,
-                itemBuilder: (context, index) {
-                  return NotificationListLayout(
-                      removeFromList: () {
-                        waterReminderController.removeNotificationRegistry(
-                          index: index,
-                          notificationRegisterModel: models[index],
-                          models: models,
-                          hiveBox: hiveBox,
-                        );
-                        setState(() {});
+            : Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      child: SvgPicture.asset("assets/images/notificationBackground.svg",fit: BoxFit.contain,)),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Wrap(
+                        alignment: WrapAlignment.start,
+                        children: [
+                          Text("Reminders", style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),)
+                        ],
+                      ),
+                    ],
+                  ),
+                  Expanded(
+                    child: ListView.separated(
+                      itemCount: itemCount,
+                      itemBuilder: (context, index) {
+                        return NotificationListLayout(
+                            removeFromList: () {
+                              waterReminderController.removeNotificationRegistry(
+                                index: index,
+                                notificationRegisterModel: models[index],
+                                models: models,
+                                hiveBox: hiveBox,
+                              );
+                              setState(() {});
+                            },
+                            models: models,
+                            notificationSettingToggle: (value) {
+                              models[index].isReminderEnabled = value;
+                              setState(() {});
+                            },
+                            index: index);
                       },
-                      models: models,
-                      notificationSettingToggle: (value) {
-                        models[index].isReminderEnabled = value;
-                        setState(() {});
+                      separatorBuilder: (BuildContext context, int index) {
+                        return const SizedBox(height: 10);
                       },
-                      index: index);
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return const SizedBox(height: 10);
-                },
+                    ),
+                  ),],
               ),
+            ),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: appPrimaryColor,

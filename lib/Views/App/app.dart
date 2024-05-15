@@ -1,7 +1,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:water_tracker/Utils/app_scroll_behaviour.dart';
-import '../../Services/NotificationService.dart';
+import '../../Services/notification_service.dart';
 import '../../Themes/appbar_themes.dart';
 import '../../Themes/elevated_button_style.dart';
 import '../../Themes/form_text_field_themes.dart';
