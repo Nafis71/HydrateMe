@@ -29,8 +29,6 @@ class _WaterTrackerState extends State<WaterTracker> {
     return MaterialApp(
       title: "Water Tracker",
       debugShowCheckedModeBanner: false,
-      locale: DevicePreview.locale(context),
-      builder: DevicePreview.appBuilder,
       initialRoute: Routes.onBoardScreen.toString(),
       onGenerateRoute: (routeSettings) => generateRoute(routeSettings),
       theme: ThemeData(

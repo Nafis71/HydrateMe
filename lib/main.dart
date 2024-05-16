@@ -15,5 +15,5 @@ main() async {
   Hive.registerAdapter(NotificationRegisterModelAdapter());
   await Hive.openBox<WaterIntakeModel>("WaterIntake");
   await Hive.openBox<NotificationRegisterModel>("NotificationRecord");
-  runApp(DevicePreview(builder:(context)=> const WaterTracker()));
+  runApp(const WaterTracker());
 }

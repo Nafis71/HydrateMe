@@ -27,20 +27,30 @@ class WaterTrackerController {
     List<WaterIntakeModel> models = [];
     Box hiveBox = HiveBoxes.getWaterIntakeData();
     int length = hiveBox.length;
+    String dateOfToday = getCurrentDateTime();
     if (length >= maxItem) {
       for (int index = length - 1; index > length - 4; index--) {
-        models.add(hiveBox.getAt(index));
+        if (DateFormat.yMMMd().format(hiveBox.getAt(index).dateTime) ==
+            dateOfToday) {
+          models.add(hiveBox.getAt(index));
+        }
       }
     } else {
       for (int index = length - 1; index >= 0; index--) {
-        models.add(hiveBox.getAt(index));
+        if (DateFormat.yMMMd().format(hiveBox.getAt(index).dateTime) ==
+            dateOfToday) {
+          models.add(hiveBox.getAt(index));
+        }
       }
     }
     return models;
   }
 
   void chooseContainer(
-      int index, String selectedDrink, Color bottomSheetEditBoxColor, WaterIntakeTrackerModel waterIntakeTrackerModel) {
+      int index,
+      String selectedDrink,
+      Color bottomSheetEditBoxColor,
+      WaterIntakeTrackerModel waterIntakeTrackerModel) {
     containerContents[index].isSelected = !containerContents[index].isSelected;
     if (containerContents[index].isSelected) {
       waterIntakeTrackerModel.selectedDrink = containerContents[index].header;
@@ -57,10 +67,11 @@ class WaterTrackerController {
     }
   }
 
-  int calculateDailyWaterIntake(WaterIntakeTrackerModel waterIntakeTrackerModel, PersonData personData) {
+  int calculateDailyWaterIntake(
+      WaterIntakeTrackerModel waterIntakeTrackerModel, PersonData personData) {
     int totalDrank = 0;
     Box hiveBox = HiveBoxes.getWaterIntakeData();
-    String dateOfToday = DateFormat.yMMMd().format(DateTime.now());
+    String dateOfToday = getCurrentDateTime();
     for (int index = 0; index < hiveBox.length; index++) {
       if (DateFormat.yMMMd().format(hiveBox.getAt(index).dateTime) ==
           dateOfToday) {
@@ -69,20 +80,25 @@ class WaterTrackerController {
     }
     waterIntakeTrackerModel.goalCompletion =
         ((totalDrank / personData.calculateWaterIntakeGoal()) * 100).toInt();
-    if(waterIntakeTrackerModel.goalCompletion > 100){
+    if (waterIntakeTrackerModel.goalCompletion > 100) {
       waterIntakeTrackerModel.goalCompletion = 100;
     }
     return totalDrank;
   }
 
-  void addWaterIntake(BuildContext context,WaterIntakeTrackerModel waterIntakeTrackerModel, TextEditingController drinkSizeTEController){
+  void addWaterIntake(
+      BuildContext context,
+      WaterIntakeTrackerModel waterIntakeTrackerModel,
+      TextEditingController drinkSizeTEController) {
     waterIntakeTrackerModel.selectedDrinkQuantity =
         double.tryParse(drinkSizeTEController.text) ?? 0.0;
-    if (waterIntakeTrackerModel.selectedDrink != "" && waterIntakeTrackerModel.selectedDrinkQuantity > 0) {
+    if (waterIntakeTrackerModel.selectedDrink != "" &&
+        waterIntakeTrackerModel.selectedDrinkQuantity > 0) {
       DateTime dateTime = DateTime.now();
       final data = WaterIntakeModel(
         drinkName: waterIntakeTrackerModel.selectedDrink,
-        drinkSize: waterIntakeTrackerModel.selectedDrinkQuantity.toInt().toString(),
+        drinkSize:
+            waterIntakeTrackerModel.selectedDrinkQuantity.toInt().toString(),
         dateTime: dateTime,
       );
       Navigator.pop(context);
@@ -93,5 +109,9 @@ class WaterTrackerController {
   void saveToDatabase(WaterIntakeModel data) {
     Box hiveBox = HiveBoxes.getWaterIntakeData();
     hiveBox.add(data);
+  }
+
+  String getCurrentDateTime(){
+    return DateFormat.yMMMd().format(DateTime.now());
   }
 }
