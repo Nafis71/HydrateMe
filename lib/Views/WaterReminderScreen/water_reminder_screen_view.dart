@@ -42,7 +42,15 @@ class _WaterReminderScreenViewState extends State<WaterReminderScreenView> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text("Reminder"),
+        leading: IconButton(
+          onPressed: (){
+            ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back,color: appPrimaryColor,size: 27,),
+        ),
       ),
       body: SafeArea(
         child: (itemCount == 0)
@@ -79,8 +87,8 @@ class _WaterReminderScreenViewState extends State<WaterReminderScreenView> {
                         itemCount: itemCount,
                         itemBuilder: (context, index) {
                           return NotificationListLayout(
-                            removeFromList: () async {
-                              await waterReminderController
+                            removeFromList: () {
+                              waterReminderController
                                   .removeNotificationRegistry(
                                 index: index,
                                 notificationRegisterModel: models[index],
@@ -99,6 +107,7 @@ class _WaterReminderScreenViewState extends State<WaterReminderScreenView> {
                             },
                             updateNotificationTime: () async{
                               await waterReminderController.editScheduledNotificationTime(models[index]);
+                              showBanner(appBannerUpdateReminderContent,appPrimaryColor);
                               setState(() {});
                             },
                             index: index,
@@ -133,6 +142,13 @@ class _WaterReminderScreenViewState extends State<WaterReminderScreenView> {
     );
   }
 
+  void showBanner(String content,Color color){
+    ScaffoldMessenger.of(context).showMaterialBanner((appBanner(
+        content: content,
+        color: color,
+        context: _scaffoldKey.currentContext!)));
+  }
+
   void showAlertDialog() {
     selectedTime = TimeOfDay.now();
     showDialog(
@@ -156,10 +172,7 @@ class _WaterReminderScreenViewState extends State<WaterReminderScreenView> {
                   hiveBox: hiveBox,
                   selectedTime: selectedTime!,
                   isRepeatable: isRepeatable);
-              ScaffoldMessenger.of(context).showMaterialBanner((appBanner(
-                  content: appBannerContent,
-                  color: appPrimaryColor,
-                  context: _scaffoldKey.currentContext!)));
+              showBanner(appBannerSetReminderContent,appPrimaryColor);
               setState(() {});
             },
           );

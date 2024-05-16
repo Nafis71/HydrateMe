@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:water_tracker/Views/ViewAllDrinkScreen/view_all_drink_screen_view.dart';
 import '../Views/DataCollectionScreen/data_collection_screen.dart';
 import '../Views/HomeScreen/home_screen_view.dart';
 import '../Views/OnboardScreen/onboard_screen_view.dart';
@@ -8,8 +9,8 @@ enum Routes {
   onBoardScreen,
   homeScreen,
   dataCollectionScreen,
-  waterIntakeMenu,
-  addNotificationScreen
+  addNotificationScreen,
+  viewAllDrinkScreen
 }
 
 MaterialPageRoute? generateRoute(RouteSettings routeSettings) {
@@ -20,6 +21,7 @@ MaterialPageRoute? generateRoute(RouteSettings routeSettings) {
         const DataCollectionScreenView(),
     Routes.addNotificationScreen.toString(): (context) =>
         const WaterReminderScreenView(),
+    Routes.viewAllDrinkScreen.toString(): (context) => const ViewAllDrinkScreenView(),
   };
   final WidgetBuilder? builder = routes[routeSettings.name];
   return (builder != null) ? MaterialPageRoute(builder: builder) : null;

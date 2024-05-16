@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:water_tracker/Utils/hive_boxes.dart';
 import 'package:water_tracker/Models/water_intake_model.dart';
+import 'package:water_tracker/Utils/routes.dart';
 
 import '../../Utils/colors.dart';
 import '../../Utils/constants.dart';
@@ -22,7 +23,7 @@ class HomeScreenRecentlyDrankInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<WaterIntakeModel> model = getRecentDrinkInfo();
+    List<WaterIntakeModel> waterIntakeModel = getRecentDrinkInfo();
     return SizedBox(
       width: screenWidth * 0.9,
       height: (orientation == Orientation.portrait)
@@ -31,8 +32,8 @@ class HomeScreenRecentlyDrankInfo extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-           Row(
-             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
                 recentlyDrankText,
@@ -40,10 +41,16 @@ class HomeScreenRecentlyDrankInfo extends StatelessWidget {
               ),
               InkWell(
                 splashColor: Colors.transparent,
-                onTap: (){},
+                onTap: () {
+                  Navigator.pushNamed(
+                      context, Routes.viewAllDrinkScreen.toString());
+                },
                 child: const Text(
                   viewAllText,
-                  style: TextStyle(fontSize: 14,color: Colors.grey,fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold),
                 ),
               )
             ],
@@ -54,14 +61,16 @@ class HomeScreenRecentlyDrankInfo extends StatelessWidget {
           const SizedBox(
             height: 5,
           ),
-
-          (drankWater != 0) ? recentlyDrankWaterLayout(model) : noRecordLayout(),
+          (drankWater != 0)
+              ? recentlyDrankWaterLayout(waterIntakeModel)
+              : noRecordLayout(),
         ],
       ),
     );
   }
 
-  Widget recentlyDrankWaterLayout(List<WaterIntakeModel> waterIntakeModel) => Flexible(
+  Widget recentlyDrankWaterLayout(List<WaterIntakeModel> waterIntakeModel) =>
+      Flexible(
         child: Material(
           color: Colors.white,
           child: ListView.separated(
@@ -78,13 +87,14 @@ class HomeScreenRecentlyDrankInfo extends StatelessWidget {
                   getIcon(waterIntakeModel, index),
                   size: 28,
                 ),
-                subtitle: Text("${waterIntakeModel[index].drinkSize}$sizeMetric"),
-
+                subtitle:
+                    Text("${waterIntakeModel[index].drinkSize}$sizeMetric"),
                 trailing: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      DateFormat.MMMMEEEEd().format(waterIntakeModel[index].dateTime),
+                      DateFormat.MMMMEEEEd()
+                          .format(waterIntakeModel[index].dateTime),
                       style: const TextStyle(
                         fontSize: 14,
                       ),
@@ -127,12 +137,12 @@ class HomeScreenRecentlyDrankInfo extends StatelessWidget {
         ),
       );
 
-  IconData? getIcon(List<WaterIntakeModel> waterIntakeModel, int index){
-    Map<String,IconData> iconMap = {
-      "Coffee" : Icons.coffee,
-      "Water" : Icons.water_drop,
-      "Juice" : Icons.apple,
-      "Tea" : Icons.energy_savings_leaf,
+  IconData? getIcon(List<WaterIntakeModel> waterIntakeModel, int index) {
+    Map<String, IconData> iconMap = {
+      "Coffee": Icons.coffee,
+      "Water": Icons.water_drop,
+      "Juice": Icons.apple,
+      "Tea": Icons.energy_savings_leaf,
     };
     return iconMap[waterIntakeModel[index].drinkName];
   }
@@ -141,12 +151,14 @@ class HomeScreenRecentlyDrankInfo extends StatelessWidget {
     List<WaterIntakeModel> models = [];
     Box hiveBox = HiveBoxes.getWaterIntakeData();
     int length = hiveBox.length;
-    try {
+    if (length >= 3) {
       for (int index = length - 1; index > length - 4; index--) {
-        models.add(hiveBox.get(index));
+        models.add(hiveBox.getAt(index));
       }
-    } catch (e) {
-      debugPrint(e.toString());
+    } else {
+      for (int index = length - 1; index >= 0; index--) {
+        models.add(hiveBox.getAt(index));
+      }
     }
     return models;
   }

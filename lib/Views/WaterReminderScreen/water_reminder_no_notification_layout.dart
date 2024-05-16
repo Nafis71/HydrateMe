@@ -19,13 +19,18 @@ class NoNotificationLayout extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(height: screenHeight * 0.1,),
+                SizedBox(
+                  height: screenHeight * 0.1,
+                ),
                 SvgPicture.asset(
                   "assets/images/noNotificationFound.svg",
                   height: screenHeight * 0.5,
                   fit: BoxFit.contain,
                 ),
-                const Text("No notification is set for the reminder")
+                const Text(
+                  "No notification is set for the reminder",
+                  style: TextStyle(fontSize: 15),
+                ),
               ],
             ),
           ),

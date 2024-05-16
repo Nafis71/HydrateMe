@@ -26,7 +26,8 @@ const String bottomLayoutSecondHeader = "Goal";
 
 //notificationConstants
 const String alertDialogHeader = "Add Reminder";
-const String appBannerContent = "Success! Your water reminder has been set";
+const String appBannerSetReminderContent = "Your water reminder has been set!";
+const String appBannerUpdateReminderContent = "Your water reminder has been updated!";
 const String alertDialogButtonText = "Choose Time";
 const String alertDialogCheckBoxText = "Repeat";
 const String alertDialogCancelButtonText= "Cancel";
