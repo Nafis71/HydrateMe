@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../Utils/colors.dart';
 import '../../Utils/constants.dart';
 
@@ -42,12 +41,12 @@ class WaterReminderAlertDialog extends StatelessWidget {
                   chooseTime();
                 },
                 icon: const Icon(Icons.watch_later_outlined),
-                label: const Text("Choose Time"),
+                label: const Text(alertDialogButtonText),
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.09,
                 child: CheckboxListTile(
-                  title: const Text("Repeat"),
+                  title: const Text(alertDialogCheckBoxText),
                   value: isRepeatable,
                   onChanged: (value) {
                     changeNotificationMode(value);
@@ -63,7 +62,7 @@ class WaterReminderAlertDialog extends StatelessWidget {
                 Navigator.pop(context);
               },
               child: const Text(
-                "Cancel",
+                alertDialogCancelButtonText,
                 style: TextStyle(color: Colors.grey, fontSize: 16),
               ),
             ),
@@ -73,7 +72,7 @@ class WaterReminderAlertDialog extends StatelessWidget {
                 setReminder();
               },
               child: const Text(
-                "Set Reminder",
+                alertDialogSetReminderButtonText,
                 style: TextStyle(color: Colors.black, fontSize: 16),
               ),
             )

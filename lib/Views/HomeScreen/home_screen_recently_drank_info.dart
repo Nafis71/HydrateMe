@@ -26,7 +26,7 @@ class HomeScreenRecentlyDrankInfo extends StatelessWidget {
     return SizedBox(
       width: screenWidth * 0.9,
       height: (orientation == Orientation.portrait)
-          ? screenHeight * 0.35
+          ? screenHeight * 0.25
           : screenHeight * 0.35,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -79,7 +79,7 @@ class HomeScreenRecentlyDrankInfo extends StatelessWidget {
                   size: 28,
                 ),
                 subtitle: Text("${waterIntakeModel[index].drinkSize}$sizeMetric"),
-                
+
                 trailing: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

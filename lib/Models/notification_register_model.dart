@@ -4,15 +4,16 @@ part 'notification_register_model.g.dart';
 @HiveType(typeId: 1)
 class NotificationRegisterModel extends HiveObject {
   @HiveField(0)
-  int id;
+  int id = 0;
 
   @HiveField(1)
-  String time;
+  String time = "";
 
   @HiveField(2)
-  String repeatType;
+  String repeatType ="";
+
   @HiveField(3)
-  bool isReminderEnabled;
+  bool isReminderEnabled = true;
 
   NotificationRegisterModel({required this.id, required this.time, required this.repeatType, required this.isReminderEnabled});
 }

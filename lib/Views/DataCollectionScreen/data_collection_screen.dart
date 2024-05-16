@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:water_tracker/Controllers/data_collection_controller.dart';
 import 'package:water_tracker/Utils/routes.dart';
 import 'package:widget_and_text_animator/widget_and_text_animator.dart';
-import '../Components/data_collection_screen_form_layout.dart';
+import 'data_collection_screen_form_layout.dart';
 
 class DataCollectionScreenView extends StatefulWidget {
   const DataCollectionScreenView({super.key});

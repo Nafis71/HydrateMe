@@ -34,9 +34,13 @@ class NotificationService {
         onNotificationDisplayed(receivedNotification);
           },
       onActionReceivedMethod: (ReceivedAction receivedAction) async {
-        debugPrint("testing");
+        onActionReceived(receivedAction);
       },
     );
+  }
+
+  static Future<void> onActionReceived(ReceivedAction receivedAction) async{
+    debugPrint("testing");
   }
 
   static Future<void> onNotificationDisplayed(

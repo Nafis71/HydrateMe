@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:water_tracker/Models/person_data.dart';
+import 'package:water_tracker/Utils/constants.dart';
 import '../../Utils/colors.dart';
 
 class HomeScreenBottomLayout extends StatelessWidget {
@@ -64,7 +65,7 @@ class HomeScreenBottomLayout extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
-                          "Drank",
+                          bottomLayoutFirstHeader,
                           style: TextStyle(
                             color: Colors.grey,
                             fontWeight: FontWeight.w500,
@@ -79,7 +80,7 @@ class HomeScreenBottomLayout extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
-                          "${drankWater.toString()}ml",
+                          "${drankWater.toString()}$sizeMetric",
                           style: const TextStyle(
                             color: appPrimaryColor,
                             fontSize: 20,
@@ -124,7 +125,7 @@ class HomeScreenBottomLayout extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
-                          "Goal",
+                          bottomLayoutSecondHeader,
                           style: TextStyle(
                             color: Colors.grey,
                             fontWeight: FontWeight.w500,
@@ -139,7 +140,7 @@ class HomeScreenBottomLayout extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
-                          "${personData.calculateWaterIntakeGoal().toString()}ml",
+                          "${personData.calculateWaterIntakeGoal().toString()}$sizeMetric",
                           style: const TextStyle(
                             color: appPrimaryColor,
                             fontSize: 20,

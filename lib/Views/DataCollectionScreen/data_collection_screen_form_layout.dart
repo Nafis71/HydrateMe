@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:water_tracker/Utils/constants.dart';
 import 'package:water_tracker/Views/Components/text_form_field.dart';
-import 'app_radio_list_tile.dart';
+import '../Components/app_radio_list_tile.dart';
 
 class DataCollectionScreenFormLayout extends StatelessWidget {
   final Orientation orientation;

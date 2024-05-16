@@ -3,8 +3,8 @@
 //dataCollectionScreenConstants
 const String nameEditingField = "Enter your name";
 const String ageEditingField = "Enter your age";
-const String invalidNameError = "Enter your age";
-const String invalidAgeError = "Enter your age";
+const String invalidNameError = "Invalid Name";
+const String invalidAgeError = "Invalid Age";
 const String regEXName = r'^[a-z A-Z]+$';
 const String regExAge = r'^[0-9]+$';
 
@@ -12,17 +12,26 @@ const String regExAge = r'^[0-9]+$';
 const String bottomSheetDrinkTypeHeader = "Choose drink type";
 const String bottomSheetDrinkTypeSecondaryHeader = "Select what you actually drink";
 const String bottomSheetDrinkTypeEditBoxText = "Enter size of the drink";
-const String bottomSheetAddDrinkButtonText = "Enter size of the drink";
+const String bottomSheetAddDrinkButtonText = "ADD DRINK";
 
 
 //homeScreenConstants
 const String homeScreenGreeting = "Hi,";
-const String noRecordOfWaterConsumptionText = "You haven't yet consumed any water.";
+const String noRecordOfWaterConsumptionText = "You haven't yet consumed any water today.";
 const String recentlyDrankText = "Recently Drank";
 const String viewAllText = "View All";
+const String bottomLayoutFirstHeader = "Drank";
+const String bottomLayoutSecondHeader = "Goal";
+
 
 //notificationConstants
 const String alertDialogHeader = "Add Reminder";
+const String appBannerContent = "Success! Your water reminder has been set";
+const String alertDialogButtonText = "Choose Time";
+const String alertDialogCheckBoxText = "Repeat";
+const String alertDialogCancelButtonText= "Cancel";
+const String alertDialogSetReminderButtonText = "Set Reminder";
+
 
 
 //universals
@@ -39,8 +48,8 @@ const notificationChannelGroupName = "Scheduled Channel Group";
 const notificationChannelName = "Water Reminder Channel";
 const notificationChannelKey = "ScheduledChannel";
 const notificationChannelDescription = "Notification channel for reminding water intake";
-const notificationTitle = "You need to drink water";
-const notificationBody = "You have added an alarm to remind you to drink water";
+const notificationTitle = "Stay Hydrated!";
+const notificationBody = "Hey there!\nJust a friendly reminder to drink some water. Staying hydrated is essential for your health and well-being. Take a moment to grab a glass of water and give your body the hydration it needs. Your body will thank you for it!";
 const nonRepeatedNotificationText = "Once";
 const repeatedNotificationText = "Repeat";
 

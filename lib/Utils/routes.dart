@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:water_tracker/Views/NotificationScreen/water_reminder_screen_view.dart';
-
 import '../Views/DataCollectionScreen/data_collection_screen.dart';
 import '../Views/HomeScreen/home_screen_view.dart';
 import '../Views/OnboardScreen/onboard_screen_view.dart';
+import '../Views/WaterReminderScreen/water_reminder_screen_view.dart';
 
 enum Routes {
   onBoardScreen,
