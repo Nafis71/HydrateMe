@@ -1,6 +1,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:water_tracker/Utils/app_scroll_behaviour.dart';
+import 'package:water_tracker/Utils/colors.dart';
 import '../../Services/notification_service.dart';
 import '../../Themes/appbar_themes.dart';
 import '../../Themes/elevated_button_style.dart';
@@ -35,7 +36,7 @@ class _WaterTrackerState extends State<WaterTracker> {
       theme: ThemeData(
         appBarTheme: AppbarTheme.getAppbarTheme(),
         scaffoldBackgroundColor: Colors.white,
-        primaryColor: const Color(0xFF2AA2D6),
+        primaryColor: appPrimaryColor,
         inputDecorationTheme: FormTextFieldThemes.getFormTextFieldDecoration(),
         elevatedButtonTheme: ElevatedButtonStyle.getElevatedButtonStyle(),
       ),

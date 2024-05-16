@@ -62,9 +62,9 @@ class WaterTrackerController {
     Box hiveBox = HiveBoxes.getWaterIntakeData();
     String dateOfToday = DateFormat.yMMMd().format(DateTime.now());
     for (int index = 0; index < hiveBox.length; index++) {
-      if (DateFormat.yMMMd().format(hiveBox.get(index).dateTime) ==
+      if (DateFormat.yMMMd().format(hiveBox.getAt(index).dateTime) ==
           dateOfToday) {
-        totalDrank += int.tryParse(hiveBox.get(index).drinkSize) ?? 0;
+        totalDrank += int.tryParse(hiveBox.getAt(index).drinkSize) ?? 0;
       }
     }
     waterIntakeTrackerModel.goalCompletion =

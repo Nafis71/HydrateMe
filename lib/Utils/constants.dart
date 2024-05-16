@@ -46,23 +46,24 @@ const String sizeMetric = "ml";
 
 
 //assets
-const waterBallLottie = "assets/lottieFiles/water.json";
-const loadingAnimationLottie = "assets/lottieFiles/loading.json";
-const noNotificationFoundImage = "assets/images/noNotificationFound.svg";
-const personalInformationImage = "assets/images/info.svg";
-const drinkListNoHistoryImage = "assets/images/noHistory.svg";
+const String waterBallLottie = "assets/lottieFiles/water.json";
+const String loadingAnimationLottie = "assets/lottieFiles/loading.json";
+const String noNotificationFoundImage = "assets/images/noNotificationFound.svg";
+const String personalInformationImage = "assets/images/info.svg";
+const String drinkListNoHistoryImage = "assets/images/noHistory.svg";
+const String appLogo = "assets/images/appLogo.png";
 
 
 //notificationService
-const notificationChannelGroupKey = "ScheduledChannelGroup";
-const notificationChannelGroupName = "Scheduled Channel Group";
-const notificationChannelName = "Water Reminder Channel";
-const notificationChannelKey = "ScheduledChannel";
-const notificationChannelDescription = "Notification channel for reminding water intake";
-const notificationTitle = "Stay Hydrated!";
-const notificationBody = "Hey there!\nJust a friendly reminder to drink some water. Staying hydrated is essential for your health and well-being. Take a moment to grab a glass of water and give your body the hydration it needs. Your body will thank you for it!";
-const nonRepeatedNotificationText = "Once";
-const repeatedNotificationText = "Repeat";
+const String notificationChannelGroupKey = "ScheduledChannelGroup";
+const String notificationChannelGroupName = "Scheduled Channel Group";
+const String notificationChannelName = "Water Reminder Channel";
+const String notificationChannelKey = "ScheduledChannel";
+const String notificationChannelDescription = "Notification channel for reminding water intake";
+const String notificationTitle = "Stay Hydrated!";
+const String notificationBody = "Hey there! Just a friendly reminder to drink some water. Staying hydrated is essential for your health.";
+const String nonRepeatedNotificationText = "Once";
+const String repeatedNotificationText = "Repeat";
 
 //timePicketTexts
 const String selectText = "Select";
