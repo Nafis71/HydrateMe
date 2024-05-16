@@ -6,8 +6,7 @@ import '../../Models/notification_register_model.dart';
 import '../../Utils/colors.dart';
 
 class NotificationListLayout extends StatelessWidget {
-  final Function removeFromList;
-
+  final Function removeFromList, updateNotificationTime;
   final Function(dynamic) notificationSettingToggle;
   final List<NotificationRegisterModel> models;
   final int index;
@@ -17,7 +16,8 @@ class NotificationListLayout extends StatelessWidget {
       required this.removeFromList,
       required this.models,
       required this.notificationSettingToggle,
-      required this.index});
+      required this.index,
+      required this.updateNotificationTime});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class NotificationListLayout extends StatelessWidget {
               backgroundColor: Colors.redAccent,
             ),
             SlidableAction(
-              onPressed: (context) {},
+              onPressed: (context) => updateNotificationTime(),
               icon: Icons.edit,
               label: "Edit",
               spacing: 10,

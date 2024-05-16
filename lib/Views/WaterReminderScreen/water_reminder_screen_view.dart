@@ -12,7 +12,6 @@ import '../../Utils/colors.dart';
 import '../../Utils/constants.dart';
 import '../Components/app_banner.dart';
 
-
 class WaterReminderScreenView extends StatefulWidget {
   const WaterReminderScreenView({super.key});
 
@@ -49,72 +48,78 @@ class _WaterReminderScreenViewState extends State<WaterReminderScreenView> {
         child: (itemCount == 0)
             ? const NoNotificationLayout()
             : Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              SizedBox(
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height * 0.3,
-                  child: SvgPicture.asset(
-                    "assets/images/notificationBackground.svg",
-                    fit: BoxFit.contain,)),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Wrap(
-                    alignment: WrapAlignment.start,
-                    children: [
-                      Text("Reminders", style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),)
-                    ],
-                  ),
-                ],
-              ),
-              Expanded(
-                child: ListView.separated(
-                  itemCount: itemCount,
-                  itemBuilder: (context, index) {
-                    return NotificationListLayout(
-                        removeFromList: () async {
-                          await waterReminderController
-                              .removeNotificationRegistry(
-                            index: index,
-                            notificationRegisterModel: models[index],
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.3,
+                        child: SvgPicture.asset(
+                          "assets/images/notificationBackground.svg",
+                          fit: BoxFit.contain,
+                        )),
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Wrap(
+                          alignment: WrapAlignment.start,
+                          children: [
+                            Text(
+                              "Reminders",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                    Expanded(
+                      child: ListView.separated(
+                        itemCount: itemCount,
+                        itemBuilder: (context, index) {
+                          return NotificationListLayout(
+                            removeFromList: () async {
+                              await waterReminderController
+                                  .removeNotificationRegistry(
+                                index: index,
+                                notificationRegisterModel: models[index],
+                                models: models,
+                                hiveBox: hiveBox,
+                              );
+                              setState(() {});
+                            },
                             models: models,
-                            hiveBox: hiveBox,
+                            notificationSettingToggle: (value) async {
+                              models[index].isReminderEnabled = value;
+                              await waterReminderController.toggleNotification(
+                                  notificationRegisterModel: models[index],
+                                  isReminderEnabled: value);
+                              setState(() {});
+                            },
+                            updateNotificationTime: () async{
+                              await waterReminderController.editScheduledNotificationTime(models[index]);
+                              setState(() {});
+                            },
+                            index: index,
                           );
-                          setState(() {});
                         },
-                        models: models,
-                        notificationSettingToggle: (value) {
-                          models[index].isReminderEnabled = value;
-                          waterReminderController.toggleNotification(
-                              notificationRegisterModel: models[index],
-                              isReminderEnabled: value);
-                          setState(() {});
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const SizedBox(height: 10);
                         },
-                        index: index);
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return const SizedBox(height: 10);
-                  },
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: appPrimaryColor,
         shape:
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.00)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.00)),
         onPressed: () async {
           bool hasPermission =
-          await NotificationService.checkNotificationPermission();
+              await NotificationService.checkNotificationPermission();
           if (hasPermission) {
             showAlertDialog();
           }
@@ -132,36 +137,34 @@ class _WaterReminderScreenViewState extends State<WaterReminderScreenView> {
     selectedTime = TimeOfDay.now();
     showDialog(
       context: context,
-      builder: (context) =>
-          StatefulBuilder(
-            builder: (BuildContext context, setDialogState) {
-              return WaterReminderAlertDialog(
-                selectedTime: selectedTime,
-                chooseTime: () async {
-                  selectedTime = await waterReminderController.launchTimePicker(
-                    selectedTime!,
-                  );
-                  setDialogState(() {});
-                },
-                changeNotificationMode: (value) {
-                  isRepeatable = value!;
-                  setDialogState(() {});
-                },
-                isRepeatable: isRepeatable,
-                setReminder: () {
-                  waterReminderController.setReminder(
-                      hiveBox: hiveBox,
-                      selectedTime: selectedTime!,
-                      isRepeatable: isRepeatable);
-                  ScaffoldMessenger.of(context).showMaterialBanner((appBanner(
-                      content: appBannerContent,
-                      color: appPrimaryColor,
-                      context: _scaffoldKey.currentContext!)));
-                  setState(() {});
-                },
-              );
+      builder: (context) => StatefulBuilder(
+        builder: (BuildContext context, setDialogState) {
+          return WaterReminderAlertDialog(
+            selectedTime: selectedTime,
+            chooseTime: () async {
+              selectedTime =
+                  await waterReminderController.launchTimePicker(selectedTime!);
+              setDialogState(() {});
             },
-          ),
+            changeNotificationMode: (value) {
+              isRepeatable = value!;
+              setDialogState(() {});
+            },
+            isRepeatable: isRepeatable,
+            setReminder: () {
+              waterReminderController.setReminder(
+                  hiveBox: hiveBox,
+                  selectedTime: selectedTime!,
+                  isRepeatable: isRepeatable);
+              ScaffoldMessenger.of(context).showMaterialBanner((appBanner(
+                  content: appBannerContent,
+                  color: appPrimaryColor,
+                  context: _scaffoldKey.currentContext!)));
+              setState(() {});
+            },
+          );
+        },
+      ),
     );
   }
 }

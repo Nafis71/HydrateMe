@@ -15,12 +15,30 @@ class WaterReminderController {
 
   WaterReminderController(this.context);
 
-  Future<TimeOfDay> launchTimePicker(TimeOfDay timeOfDay) async {
+  Future<TimeOfDay> launchTimePicker(TimeOfDay currentTime) async {
     return await showTimePicker(
-      confirmText: selectText,
-      context: context,
-      initialTime: timeOfDay,
-    ) ?? TimeOfDay.now();
+          confirmText: selectText,
+          context: context,
+          initialTime: currentTime,
+        ) ??
+        currentTime;
+  }
+
+  Future<void> editScheduledNotificationTime(
+      NotificationRegisterModel notificationRegisterModel) async {
+    TimeOfDay currentTime = parseTimeOfDay(notificationRegisterModel.time);
+    currentTime = await launchTimePicker(currentTime);
+    if(context.mounted){
+      notificationRegisterModel.time = currentTime.format(context);
+    }
+    updateNotification(
+      currentTime,
+      notificationRegisterModel.id,
+      (notificationRegisterModel.repeatType == repeatedNotificationText)
+          ? true
+          : false,
+    );
+    notificationRegisterModel.save();
   }
 
   List<NotificationRegisterModel> getNotificationModels() {
@@ -33,9 +51,10 @@ class WaterReminderController {
     return models;
   }
 
-  void setReminder({required Box hiveBox,
-    required TimeOfDay selectedTime,
-    required bool isRepeatable}) {
+  void setReminder(
+      {required Box hiveBox,
+      required TimeOfDay selectedTime,
+      required bool isRepeatable}) {
     Random random = Random();
     int id = random.nextInt(999);
     NotificationService.createScheduledNotification(
@@ -54,10 +73,11 @@ class WaterReminderController {
         isRepeatable: isRepeatable);
   }
 
-  void saveToDatabase({required int id,
-    required Box hiveBox,
-    required TimeOfDay selectedTime,
-    required bool isRepeatable}) {
+  void saveToDatabase(
+      {required int id,
+      required Box hiveBox,
+      required TimeOfDay selectedTime,
+      required bool isRepeatable}) {
     NotificationRegisterModel notificationModel = NotificationRegisterModel(
       id: id,
       time: selectedTime.format(context).toString(),
@@ -69,24 +89,37 @@ class WaterReminderController {
     hiveBox.add(notificationModel);
   }
 
-
   Future<void> toggleNotification(
-      {required NotificationRegisterModel notificationRegisterModel, required bool isReminderEnabled}) async {
+      {required NotificationRegisterModel notificationRegisterModel,
+      required bool isReminderEnabled}) async {
     if (isReminderEnabled) {
-      AwesomeNotifications().cancelSchedule(notificationRegisterModel.id);
-      DateTime dateTime = DateFormat("h:mm a").parse(notificationRegisterModel.time);
-      TimeOfDay notificationTime = TimeOfDay.fromDateTime(dateTime);
-      NotificationService.createScheduledNotification(id: notificationRegisterModel.id,
-          channelKey: notificationChannelKey,
-          title: notificationTitle,
-          body: notificationBody,
-          hour: notificationTime.hour,
-          minute: notificationTime.minute,
-          second: 0,
-          repeat: (notificationRegisterModel.repeatType == repeatedNotificationText) ? true : false);
+      TimeOfDay notificationTime =
+          parseTimeOfDay(notificationRegisterModel.time);
+      updateNotification(
+        notificationTime,
+        notificationRegisterModel.id,
+        (notificationRegisterModel.repeatType == repeatedNotificationText)
+            ? true
+            : false,
+      );
     } else {
       AwesomeNotifications().cancelSchedule(notificationRegisterModel.id);
     }
+    notificationRegisterModel.save();
+  }
+
+  Future<void> updateNotification(
+      TimeOfDay notificationTime, int id, bool isRepeatable) async {
+    AwesomeNotifications().cancelSchedule(id);
+    await NotificationService.createScheduledNotification(
+        id: id,
+        channelKey: notificationChannelKey,
+        title: notificationTitle,
+        body: notificationBody,
+        hour: notificationTime.hour,
+        minute: notificationTime.minute,
+        second: 0,
+        repeat: isRepeatable);
   }
 
   Future<void> removeNotificationRegistry({
@@ -102,4 +135,8 @@ class WaterReminderController {
     }
   }
 
+  TimeOfDay parseTimeOfDay(String time) {
+    DateTime dateTime = DateFormat("h:mm a").parse(time);
+    return TimeOfDay.fromDateTime(dateTime);
+  }
 }
