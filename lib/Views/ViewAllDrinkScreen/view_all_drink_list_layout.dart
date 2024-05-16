@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../../Models/water_intake_model.dart';
 import '../../Utils/colors.dart';
 import '../../Utils/constants.dart';
+import '../../Utils/water_list_icons.dart';
 
 class ViewAllDrinkListLayout extends StatelessWidget {
   String displayedDatetimeHeader;
@@ -74,16 +75,6 @@ class ViewAllDrinkListLayout extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  IconData? getIcon(List<WaterIntakeModel> waterIntakeModel, int index){
-    Map<String,IconData> iconMap = {
-      "Coffee" : Icons.coffee,
-      "Water" : Icons.water_drop,
-      "Juice" : Icons.apple,
-      "Tea" : Icons.energy_savings_leaf,
-    };
-    return iconMap[waterIntakeModel[index].drinkName];
   }
 
   Widget separatorWidget(List<WaterIntakeModel> waterIntakeModel, int index){

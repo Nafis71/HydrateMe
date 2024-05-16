@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
+import 'package:water_tracker/Controllers/water_tracker_controller.dart';
 import 'package:water_tracker/Views/ViewAllDrinkScreen/view_all_drink_list_layout.dart';
-import 'package:water_tracker/Views/ViewAllDrinkScreen/view_all_screen_no_data_layout.dart';
+import 'package:water_tracker/Views/ViewAllDrinkScreen/view_all_drink_list_no_data_layout.dart';
 
 import '../../Models/water_intake_model.dart';
 import '../../Utils/colors.dart';
-import '../../Utils/constants.dart';
-import '../../Utils/hive_boxes.dart';
 
 class ViewAllDrinkScreenView extends StatefulWidget {
   const ViewAllDrinkScreenView({super.key});
@@ -18,10 +17,16 @@ class ViewAllDrinkScreenView extends StatefulWidget {
 
 class _ViewAllDrinkScreenViewState extends State<ViewAllDrinkScreenView> {
   late String displayedDatetimeHeader;
+  late WaterTrackerController waterDrinkListController;
+  @override
+  void initState() {
+    waterDrinkListController = WaterTrackerController(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    List<WaterIntakeModel> waterIntakeModel = getAllDrinkList();
+    List<WaterIntakeModel> waterIntakeModel = waterDrinkListController.getAllDrinkList();
     if (waterIntakeModel.isNotEmpty) {
       displayedDatetimeHeader =
           DateFormat.MMMMEEEEd().format(waterIntakeModel[0].dateTime);
@@ -47,18 +52,9 @@ class _ViewAllDrinkScreenViewState extends State<ViewAllDrinkScreenView> {
               displayedDatetimeHeader: displayedDatetimeHeader,
               waterIntakeModel: waterIntakeModel,
             )
-          : const ViewAllScreenNoDataLayout(),
+          : const ViewAllDrinkListNoDataLayout(),
     );
   }
 
-  List<WaterIntakeModel> getAllDrinkList() {
-    List<WaterIntakeModel> models = [];
-    Box hiveBox = HiveBoxes.getWaterIntakeData();
-    int length = hiveBox.length;
-    debugPrint(length.toString());
-    for (int index = length - 1; index >= 0; index--) {
-      models.add(hiveBox.getAt(index));
-    }
-    return models;
-  }
+
 }

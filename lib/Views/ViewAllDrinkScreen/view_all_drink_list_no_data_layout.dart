@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class ViewAllScreenNoDataLayout extends StatelessWidget {
-  const ViewAllScreenNoDataLayout({super.key});
+import '../../Utils/constants.dart';
+
+class ViewAllDrinkListNoDataLayout extends StatelessWidget {
+  const ViewAllDrinkListNoDataLayout({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,14 +17,14 @@ class ViewAllScreenNoDataLayout extends StatelessWidget {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.45,
             child: SvgPicture.asset(
-              "assets/images/noHistory.svg",
+              drinkListNoHistoryImage,
               fit: BoxFit.contain,
             ),
           ),
           const Wrap(
             children: [
               Text(
-                "You don't have any record of consuming water.",
+                noDataFoundText,
                 style: TextStyle(fontSize: 15),
               ),
             ],

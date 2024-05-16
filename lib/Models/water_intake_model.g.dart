@@ -1,10 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
 part of 'water_intake_model.dart';
-
-// **************************************************************************
-// TypeAdapterGenerator
-// **************************************************************************
 
 class WaterIntakeModelAdapter extends TypeAdapter<WaterIntakeModel> {
   @override

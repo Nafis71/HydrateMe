@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:water_tracker/Controllers/data_collection_controller.dart';
 import 'package:water_tracker/Utils/routes.dart';
 import 'package:widget_and_text_animator/widget_and_text_animator.dart';
+import '../../Utils/constants.dart';
 import 'data_collection_screen_form_layout.dart';
 
 class DataCollectionScreenView extends StatefulWidget {
@@ -71,7 +72,7 @@ class _DataCollectionScreenViewState extends State<DataCollectionScreenView> {
                             height: screenHeight * 0.25,
                             width: screenWidth * 0.8,
                             child: SvgPicture.asset(
-                              "assets/images/info.svg",
+                              personalInformationImage,
                               fit: BoxFit.scaleDown,
                             ),
                           ),
@@ -83,14 +84,14 @@ class _DataCollectionScreenViewState extends State<DataCollectionScreenView> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.00),
                       ),
-                      title: const Text("We need some of your data"),
+                      title: const Text(personalInformationAskingHeader),
                       titleTextStyle: const TextStyle(
                         fontSize: 16,
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
                       subtitle:
-                          const Text("To tailor the app according to you"),
+                          const Text(personalInformationAskingSubtitle),
                       subtitleTextStyle:
                           const TextStyle(fontSize: 13, color: Colors.grey),
                       leading: const Icon(
@@ -126,7 +127,7 @@ class _DataCollectionScreenViewState extends State<DataCollectionScreenView> {
                           checkUserData();
                         },
                         child: const Text(
-                          "Continue",
+                          continueButtonText,
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -177,7 +178,7 @@ class _DataCollectionScreenViewState extends State<DataCollectionScreenView> {
       barrierColor: Colors.white30,
       builder: (context) {
         return Center(
-          child: Lottie.asset("assets/lottieFiles/loading.json"),
+          child: Lottie.asset(loadingAnimationLottie),
         );
       },
     );

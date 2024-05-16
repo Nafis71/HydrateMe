@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:water_tracker/Controllers/water_tracker_controller.dart';
+import 'package:water_tracker/Models/water_intake_tracker_model.dart';
 import 'package:water_tracker/Utils/hive_boxes.dart';
 import 'package:water_tracker/Models/bottom_sheet_contents.dart';
 import 'package:water_tracker/Models/person_data.dart';
@@ -23,16 +25,17 @@ class HomeScreenView extends StatefulWidget {
 
 class _HomeScreenViewState extends State<HomeScreenView> {
   late final PersonData personData;
-  late TextEditingController _drinkSizeController;
+  late TextEditingController _drinkSizeTEController;
+  late WaterTrackerController waterDrinkListController;
+  late WaterIntakeTrackerModel waterIntakeTrackerModel;
   Color bottomSheetEditBoxColor = Colors.blue;
-  int goalCompletion = 0;
-  double _selectedDrinkQuantity = 0.0;
-  String selectedDrink = "";
   IconData selectedDrinkIcon = Icons.water_drop;
 
   @override
   void initState() {
-    _drinkSizeController = TextEditingController();
+    _drinkSizeTEController = TextEditingController();
+    waterDrinkListController = WaterTrackerController(context);
+    waterIntakeTrackerModel = WaterIntakeTrackerModel.getInstance();
     personData = PersonData();
     initializeSharedPreference();
     super.initState();
@@ -40,7 +43,7 @@ class _HomeScreenViewState extends State<HomeScreenView> {
 
   @override
   void dispose() {
-    _drinkSizeController.dispose();
+    _drinkSizeTEController.dispose();
     super.dispose();
   }
 
@@ -56,7 +59,9 @@ class _HomeScreenViewState extends State<HomeScreenView> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    int drankWater = calculateDailyWaterIntake();
+    int drankWater =
+        waterDrinkListController.calculateDailyWaterIntake(
+            waterIntakeTrackerModel, personData);
     return Scaffold(
       appBar: AppBar(
         title: const Text("HydrateMe"),
@@ -92,7 +97,8 @@ class _HomeScreenViewState extends State<HomeScreenView> {
                               height: 2,
                             ),
                             HomeScreenGreetingsLayout(
-                              dateTime: getDateTime(),
+                              dateTime:
+                                  DateFormat.MMMMEEEEd().format(DateTime.now()),
                             ),
                             const SizedBox(
                               height: 10,
@@ -102,7 +108,8 @@ class _HomeScreenViewState extends State<HomeScreenView> {
                               child: HomeScreenWaterIndicator(
                                 screenHeight: screenHeight,
                                 screenWidth: screenWidth,
-                                goalCompletion: goalCompletion,
+                                goalCompletion:
+                                    waterIntakeTrackerModel.goalCompletion,
                                 onPressed: () {
                                   launchWaterIntakeMenu();
                                 },
@@ -113,6 +120,8 @@ class _HomeScreenViewState extends State<HomeScreenView> {
                               screenWidth: screenWidth,
                               orientation: orientation,
                               drankWater: drankWater,
+                              waterDrinkListController:
+                                  waterDrinkListController,
                             ),
                           ],
                         ),
@@ -148,70 +157,23 @@ class _HomeScreenViewState extends State<HomeScreenView> {
         builder: (BuildContext context, Orientation orientation) {
           return HomeScreenBottomSheet(
             orientation: orientation,
-            drinkSizeController: _drinkSizeController,
-            onContainerTap: chooseContainer,
-            addWaterIntake: addWaterIntake,
+            drinkSizeController: _drinkSizeTEController,
+            onContainerTap: (index) {
+              waterDrinkListController.chooseContainer(
+                  index,
+                  waterIntakeTrackerModel.selectedDrink,
+                  bottomSheetEditBoxColor,
+                  waterIntakeTrackerModel);
+              setState(() {});
+            },
+            addWaterIntake: (context) {
+              waterDrinkListController.addWaterIntake(
+                  context, waterIntakeTrackerModel, _drinkSizeTEController);
+              setState(() {});
+            },
           );
         },
       ),
     );
-  }
-
-  void chooseContainer(int index) {
-    containerContents[index].isSelected = !containerContents[index].isSelected;
-    if (containerContents[index].isSelected) {
-      selectedDrink = containerContents[index].header;
-      bottomSheetEditBoxColor = containerContents[index].borderColor;
-    } else {
-      selectedDrink = "";
-    }
-    int id = containerContents[index].id;
-    int length = containerContents.length;
-    for (int i = 0; i < length; i++) {
-      if (id != containerContents[i].id) {
-        containerContents[i].isSelected = false;
-      }
-    }
-    setState(() {});
-  }
-
-  void addWaterIntake(BuildContext context) async {
-    _selectedDrinkQuantity = double.tryParse(_drinkSizeController.text) ?? 0.0;
-    if (selectedDrink != "" && _selectedDrinkQuantity > 0) {
-      DateTime dateTime = DateTime.now();
-      final data = WaterIntakeModel(
-        drinkName: selectedDrink,
-        drinkSize: _selectedDrinkQuantity.toInt().toString(),
-        dateTime: dateTime,
-      );
-      Navigator.pop(context);
-      saveToDatabase(data);
-    }
-  }
-
-  void saveToDatabase(WaterIntakeModel data) {
-    Box hiveBox = HiveBoxes.getWaterIntakeData();
-    hiveBox.add(data);
-    setState(() {});
-  }
-
-  String getDateTime() {
-    String dateTimeNow = DateFormat.MMMMEEEEd().format(DateTime.now());
-    return dateTimeNow;
-  }
-
-  int calculateDailyWaterIntake() {
-    int totalDrank = 0;
-    Box hiveBox = HiveBoxes.getWaterIntakeData();
-    String dateOfToday = DateFormat.yMMMd().format(DateTime.now());
-    for (int index = 0; index < hiveBox.length; index++) {
-      if (DateFormat.yMMMd().format(hiveBox.get(index).dateTime) ==
-          dateOfToday) {
-        totalDrank += int.tryParse(hiveBox.get(index).drinkSize) ?? 0;
-      }
-    }
-    goalCompletion =
-        ((totalDrank / personData.calculateWaterIntakeGoal()) * 100).toInt();
-    return totalDrank;
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../Utils/constants.dart';
+
 class NoNotificationLayout extends StatelessWidget {
   const NoNotificationLayout({super.key});
 
@@ -23,12 +25,12 @@ class NoNotificationLayout extends StatelessWidget {
                   height: screenHeight * 0.1,
                 ),
                 SvgPicture.asset(
-                  "assets/images/noNotificationFound.svg",
+                  noNotificationFoundImage,
                   height: screenHeight * 0.5,
                   fit: BoxFit.contain,
                 ),
                 const Text(
-                  "No notification is set for the reminder",
+                  noNotificationFoundText,
                   style: TextStyle(fontSize: 15),
                 ),
               ],

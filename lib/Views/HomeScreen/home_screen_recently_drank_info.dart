@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
+import 'package:water_tracker/Controllers/water_tracker_controller.dart';
 import 'package:water_tracker/Utils/hive_boxes.dart';
 import 'package:water_tracker/Models/water_intake_model.dart';
 import 'package:water_tracker/Utils/routes.dart';
 
 import '../../Utils/colors.dart';
 import '../../Utils/constants.dart';
+import '../../Utils/water_list_icons.dart';
 
 class HomeScreenRecentlyDrankInfo extends StatelessWidget {
   final double screenWidth, screenHeight;
   final Orientation orientation;
   final int drankWater;
+  final WaterTrackerController waterDrinkListController;
+  static const int maxItem = 3;
 
   const HomeScreenRecentlyDrankInfo({
     super.key,
@@ -19,11 +23,13 @@ class HomeScreenRecentlyDrankInfo extends StatelessWidget {
     required this.screenWidth,
     required this.orientation,
     required this.drankWater,
+    required this.waterDrinkListController,
   });
 
   @override
   Widget build(BuildContext context) {
-    List<WaterIntakeModel> waterIntakeModel = getRecentDrinkInfo();
+    List<WaterIntakeModel> waterIntakeModel =
+        waterDrinkListController.getRecentDrinkInfo(maxItem);
     return SizedBox(
       width: screenWidth * 0.9,
       height: (orientation == Orientation.portrait)
@@ -136,30 +142,4 @@ class HomeScreenRecentlyDrankInfo extends StatelessWidget {
           borderRadius: BorderRadius.circular(10.00),
         ),
       );
-
-  IconData? getIcon(List<WaterIntakeModel> waterIntakeModel, int index) {
-    Map<String, IconData> iconMap = {
-      "Coffee": Icons.coffee,
-      "Water": Icons.water_drop,
-      "Juice": Icons.apple,
-      "Tea": Icons.energy_savings_leaf,
-    };
-    return iconMap[waterIntakeModel[index].drinkName];
-  }
-
-  List<WaterIntakeModel> getRecentDrinkInfo() {
-    List<WaterIntakeModel> models = [];
-    Box hiveBox = HiveBoxes.getWaterIntakeData();
-    int length = hiveBox.length;
-    if (length >= 3) {
-      for (int index = length - 1; index > length - 4; index--) {
-        models.add(hiveBox.getAt(index));
-      }
-    } else {
-      for (int index = length - 1; index >= 0; index--) {
-        models.add(hiveBox.getAt(index));
-      }
-    }
-    return models;
-  }
 }
